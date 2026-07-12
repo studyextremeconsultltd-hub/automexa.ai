@@ -1,0 +1,111 @@
+import { motion } from "framer-motion";
+import { Target, Users, Rocket, HeartHandshake } from "lucide-react";
+import PageGallery from "../components/PageGallery";
+import { useQuote } from "../context/QuoteContext";
+import "./InnerPages.css";
+
+const values = [
+  {
+    icon: Target,
+    title: "Clarity First",
+    text: "Every page has one job — attract the right clients and make the next step obvious.",
+  },
+  {
+    icon: Rocket,
+    title: "Speed Without Compromise",
+    text: "We launch in days because our process is sharp — not because we cut corners.",
+  },
+  {
+    icon: Users,
+    title: "Built Around Your Brand",
+    text: "Templates are a starting point. Your colours, voice, and offer shape the final site.",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Partnership Mindset",
+    text: "We treat every project like a long-term relationship, not a one-off transaction.",
+  },
+];
+
+export default function About() {
+  const { openQuote } = useQuote();
+
+  return (
+    <main>
+      <section className="page-hero">
+        <div className="container">
+          <p className="section-label" style={{ color: "var(--teal)" }}>
+            About Us
+          </p>
+          <h1>Automexa</h1>
+          <p>
+            We help ambitious businesses look premium online — with websites, AI
+            automation, and digital systems that convert.
+          </p>
+        </div>
+      </section>
+
+      <PageGallery title="The same visual energy that powers our landing page" />
+
+      <section className="section">
+        <div className="container about-story">
+          <div className="about-story__media">
+            <img
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85"
+              alt="Automexa team collaborating"
+            />
+          </div>
+          <div>
+            <p className="section-label">Our Story</p>
+            <h2 className="section-title">Design that sells. Delivery that keeps pace.</h2>
+            <p className="section-lead" style={{ maxWidth: "none" }}>
+              Automexa was built for founders and growing companies who need a serious
+              online presence — without waiting months or paying agency markups. We
+              combine modern design, AI-assisted workflows, and a proven three-to-seven-day
+              delivery model so you can go live fast and start winning clients sooner.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section values-section">
+        <div className="container">
+          <div className="section-head center">
+            <p className="section-label">What Drives Us</p>
+            <h2 className="section-title" style={{ maxWidth: "16ch", marginInline: "auto" }}>
+              Principles behind every launch
+            </h2>
+          </div>
+          <div className="values-grid">
+            {values.map((v, i) => (
+              <motion.article
+                key={v.title}
+                className="value-card"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+              >
+                <v.icon size={28} color="#00c2a8" />
+                <h3>{v.title}</h3>
+                <p>{v.text}</p>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="cta-band">
+        <div className="container cta-band__inner">
+          <div>
+            <h2>Let us build your next website</h2>
+            <p>Share your brief and get a free, no-pressure quote.</p>
+          </div>
+          <button type="button" className="btn btn-primary" onClick={openQuote}>
+            Get Free Quote
+          </button>
+        </div>
+      </section>
+    </main>
+  );
+}

@@ -1,0 +1,117 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar--scrolled {
+  background: rgba(6, 21, 37, 0.94);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 30px rgba(6, 21, 37, 0.28);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: min(100% - 2.5rem, var(--max));
+}
+
+.navbar__logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.55rem;
+  color: var(--white);
+  letter-spacing: -0.03em;
+  margin-right: auto;
+}
+
+.navbar__logo span {
+  color: var(--teal);
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.navbar__links a {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.55rem 0.9rem;
+  border-radius: 10px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.navbar__links a:hover,
+.navbar__links a.active {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar__quote {
+  flex-shrink: 0;
+}
+
+.navbar__quote-mobile {
+  display: none;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.navbar__toggle {
+  display: none;
+  color: var(--white);
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 900px) {
+  .navbar__quote {
+    display: none;
+  }
+
+  .navbar__toggle {
+    display: grid;
+  }
+
+  .navbar__quote-mobile {
+    display: inline-flex;
+  }
+
+  .navbar__links {
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.35rem;
+    padding: 1.25rem 1.5rem 2rem;
+    background: rgba(6, 21, 37, 0.97);
+    backdrop-filter: blur(16px);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .navbar__links.is-open {
+    transform: translateX(0);
+  }
+
+  .navbar__links a {
+    padding: 0.95rem 1rem;
+    font-size: 1.05rem;
+  }
+}

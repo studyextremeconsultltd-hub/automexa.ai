@@ -1,0 +1,85 @@
+.highlight-slider {
+  position: relative;
+  min-height: clamp(220px, 28vw, 300px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  color: var(--white);
+}
+
+.highlight-slider__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.highlight-slider__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(15, 60, 110, 0.88) 0%,
+    rgba(20, 90, 160, 0.78) 45%,
+    rgba(0, 140, 160, 0.72) 100%
+  );
+}
+
+.highlight-slider__inner {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2.5rem, var(--max));
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-block: 2.25rem;
+}
+
+.highlight-slider__kicker {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9fe8ff;
+  margin-bottom: 0.55rem;
+}
+
+.highlight-slider__copy h2 {
+  font-size: clamp(1.45rem, 3.2vw, 2.15rem);
+  max-width: 28ch;
+  line-height: 1.25;
+  font-weight: 800;
+  color: #fff;
+}
+
+.highlight-slider__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.15rem;
+}
+
+.highlight-slider__dots {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.highlight-slider__dots button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transition: width 0.3s, background 0.3s;
+}
+
+.highlight-slider__dots button.is-active {
+  width: 30px;
+  border-radius: 999px;
+  background: #fff;
+}
+
+@media (max-width: 560px) {
+  .highlight-slider__inner {
+    width: min(100% - 1.5rem, var(--max));
+  }
+}
