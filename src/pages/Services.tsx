@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import PageGallery from "../components/PageGallery";
-import { services } from "../data/content";
+import SafeImage from "../components/SafeImage";
+import { pageGalleries, services } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
 import "./InnerPages.css";
 
@@ -11,7 +12,7 @@ export default function Services() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <p className="section-label" style={{ color: "var(--teal)" }}>
+          <p className="section-label" style={{ color: "var(--blue)" }}>
             Our Services
           </p>
           <h1>Everything you need to grow online</h1>
@@ -22,7 +23,11 @@ export default function Services() {
         </div>
       </section>
 
-      <PageGallery title="AI-powered design imagery across every service" />
+      <PageGallery
+        title="Services brought to life"
+        subtitle="Each frame maps to a capability we deliver — websites, automation, commerce, and CRM."
+        images={pageGalleries.services}
+      />
 
       <section className="section">
         <div className="container services-list">
@@ -36,7 +41,7 @@ export default function Services() {
               transition={{ duration: 0.5 }}
             >
               <div className="service-row__media">
-                <img src={service.image} alt={service.title} loading="lazy" />
+                <SafeImage src={service.image} alt={service.title} />
               </div>
               <div className="service-row__body">
                 <span className="service-index">0{i + 1}</span>

@@ -1,33 +1,102 @@
 import { useState } from "react";
-import { ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 import type { projects } from "../data/content";
 import "./PortfolioCard.css";
 
 type Project = (typeof projects)[number];
 
-const fallbacks: Record<string, string> = {
+const stockFallbacks: Record<string, string> = {
   roseempire:
-    "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1400&q=85",
+    "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1400&q=90&fm=jpg",
   msbt:
-    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1400&q=85",
+    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1400&q=90&fm=jpg",
 };
+
+/** Compact horizontal featured card — full-page preview + rotate */
+export function FeaturedWorkCard({
+  project,
+  index = 0,
+}: {
+  project: Project;
+  index?: number;
+}) {
+  const stock = stockFallbacks[project.id] || stockFallbacks.roseempire;
+  const [src, setSrc] = useState(project.screenshot);
+
+  function handleError() {
+    setSrc((current) => {
+      if (current === project.screenshot && project.screenshotFallback) {
+        return project.screenshotFallback;
+      }
+      return stock;
+    });
+  }
+
+  return (
+    <motion.article
+      className={`featured-card featured-card--${project.id}`}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+    >
+      <div className="featured-card__orbit">
+        <div className="featured-card__device">
+          <div className="featured-card__chrome">
+            <span />
+            <span />
+            <span />
+            <p>{project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}</p>
+          </div>
+          <div className="featured-card__viewport">
+            <img
+              src={src}
+              alt={`${project.name} full website`}
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+              onError={handleError}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="featured-card__meta">
+        <h3>{project.name}</h3>
+        <p>
+          {project.industry} · {project.country} · {project.completionTime}
+        </p>
+      </div>
+    </motion.article>
+  );
+}
 
 export default function PortfolioCard({
   project,
   reverse = false,
+  compact = false,
 }: {
   project: Project;
   reverse?: boolean;
+  compact?: boolean;
 }) {
+  const stock = stockFallbacks[project.id] || stockFallbacks.roseempire;
   const [src, setSrc] = useState(project.screenshot);
   const scrollDir = reverse ? "down" : "up";
+
+  function handleError() {
+    setSrc((current) => {
+      if (current === project.screenshot && project.screenshotFallback) {
+        return project.screenshotFallback;
+      }
+      return stock;
+    });
+  }
 
   return (
     <motion.article
       className={`portfolio-card portfolio-card--${project.id} ${
         reverse ? "portfolio-card--reverse" : ""
-      }`}
+      } ${compact ? "portfolio-card--compact" : ""}`}
       initial={{ opacity: 0, y: 36 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -47,14 +116,18 @@ export default function PortfolioCard({
               src={src}
               alt={`${project.name} complete website view`}
               loading="lazy"
-              onError={() => setSrc(fallbacks[project.id] || fallbacks.roseempire)}
+              decoding="async"
+              referrerPolicy="no-referrer"
+              onError={handleError}
             />
             <img
               src={src}
               alt=""
               aria-hidden
               loading="lazy"
-              onError={() => setSrc(fallbacks[project.id] || fallbacks.roseempire)}
+              decoding="async"
+              referrerPolicy="no-referrer"
+              onError={handleError}
             />
           </div>
           <div className="portfolio-card__shine" />
@@ -63,7 +136,7 @@ export default function PortfolioCard({
       </div>
 
       <div className="portfolio-card__body">
-        <p className="section-label section-label--catchy">Featured Project</p>
+        <p className="section-label">Featured Project</p>
         <h3>{project.name}</h3>
         <dl className="portfolio-meta">
           <div>
@@ -83,11 +156,11 @@ export default function PortfolioCard({
             <dd>{project.completionTime}</dd>
           </div>
         </dl>
-        <p className="portfolio-card__desc">{project.description}</p>
-        <a href={project.url} target="_blank" rel="noreferrer" className="btn btn-live">
-          Live Website
-          <ExternalLink size={16} />
-        </a>
+        {!compact && (
+          <>
+            <p className="portfolio-card__desc">{project.description}</p>
+          </>
+        )}
       </div>
     </motion.article>
   );

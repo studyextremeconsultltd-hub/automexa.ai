@@ -9,28 +9,28 @@ const slides = [
   {
     id: 1,
     image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=85",
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2400&q=90&fm=jpg",
     kicker: "AI Website Design",
     title: "From prompt to polished pages — AI accelerates every layout.",
   },
   {
     id: 2,
     image:
-      "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1600&q=85",
+      "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=2400&q=90&fm=jpg",
     kicker: "Smart Automation",
     title: "Design systems that look premium and convert on every device.",
   },
   {
     id: 3,
     image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600&q=85",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2400&q=90&fm=jpg",
     kicker: "Growth Ready",
     title: "Launch faster with AI-assisted builds built for real businesses.",
   },
   {
     id: 4,
     image:
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1600&q=85",
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2400&q=90&fm=jpg",
     kicker: "Contact Us",
     title: "Ready to start? Contact us and get your free quote today.",
     cta: true,

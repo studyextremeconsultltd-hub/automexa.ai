@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Target, Users, Rocket, HeartHandshake } from "lucide-react";
 import PageGallery from "../components/PageGallery";
+import SafeImage from "../components/SafeImage";
+import { pageGalleries } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
 import "./InnerPages.css";
 
@@ -34,7 +36,7 @@ export default function About() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <p className="section-label" style={{ color: "var(--teal)" }}>
+          <p className="section-label" style={{ color: "var(--blue)" }}>
             About Us
           </p>
           <h1>Automexa</h1>
@@ -45,13 +47,17 @@ export default function About() {
         </div>
       </section>
 
-      <PageGallery title="The same visual energy that powers our landing page" />
+      <PageGallery
+        title="Inside the Automexa studio"
+        subtitle="People, process, and spaces that shape every launch — not recycled landing-page stock."
+        images={pageGalleries.about}
+      />
 
       <section className="section">
         <div className="container about-story">
           <div className="about-story__media">
-            <img
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85"
+            <SafeImage
+              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1600&q=90&fm=jpg"
               alt="Automexa team collaborating"
             />
           </div>
@@ -86,7 +92,7 @@ export default function About() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
               >
-                <v.icon size={28} color="#00c2a8" />
+                <v.icon size={28} color="#2563EB" />
                 <h3>{v.title}</h3>
                 <p>{v.text}</p>
               </motion.article>

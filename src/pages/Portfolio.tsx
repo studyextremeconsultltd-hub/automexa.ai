@@ -1,6 +1,6 @@
 import PageGallery from "../components/PageGallery";
 import PortfolioCard from "../components/PortfolioCard";
-import { projects } from "../data/content";
+import { pageGalleries, projects } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
 import "./InnerPages.css";
 
@@ -11,7 +11,7 @@ export default function Portfolio() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <p className="section-label" style={{ color: "var(--teal)" }}>
+          <p className="section-label" style={{ color: "var(--blue)" }}>
             Portfolio
           </p>
           <h1>Work that speaks for itself</h1>
@@ -22,7 +22,11 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <PageGallery title="Crafted visuals behind every Automexa launch" />
+      <PageGallery
+        title="Craft behind every launch"
+        subtitle="Visual direction, interface detail, and growth-ready layouts from real Automexa builds."
+        images={pageGalleries.portfolio}
+      />
 
       <section className="section" style={{ background: "var(--white)" }}>
         <div className="container">

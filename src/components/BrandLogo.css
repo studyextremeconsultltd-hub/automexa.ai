@@ -1,0 +1,52 @@
+.brand-logo-link {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  line-height: 1;
+}
+
+.brand-logo__mark {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(37, 99, 235, 0.35));
+}
+
+.brand-logo__word {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+  color: #0b3a6e;
+}
+
+.brand-logo__word span {
+  color: #2563eb;
+}
+
+.brand-logo--light .brand-logo__word {
+  color: #ffffff;
+}
+
+.brand-logo--light .brand-logo__word span {
+  color: #93c5fd;
+}
+
+.brand-logo--light .brand-logo__mark {
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35)) brightness(1.05);
+}
+
+.brand-logo.hero__brand-logo .brand-logo__word {
+  font-size: clamp(1.65rem, 3.2vw, 2.15rem);
+}
+
+.brand-logo.hero__brand-logo .brand-logo__mark {
+  width: clamp(42px, 5vw, 52px);
+  height: clamp(42px, 5vw, 52px);
+}

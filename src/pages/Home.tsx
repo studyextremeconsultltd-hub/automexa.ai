@@ -3,7 +3,9 @@ import { ArrowRight } from "lucide-react";
 import HeroSlider from "../components/HeroSlider";
 import HighlightSlider from "../components/HighlightSlider";
 import MotionGallery from "../components/MotionGallery";
-import PortfolioCard from "../components/PortfolioCard";
+import { FeaturedWorkCard } from "../components/PortfolioCard";
+import SafeImage from "../components/SafeImage";
+import SocialLinks from "../components/SocialLinks";
 import {
   deliverBlocks,
   pricingPlans,
@@ -16,6 +18,7 @@ import "./Home.css";
 
 export default function Home() {
   const { openQuote } = useQuote();
+  const deliverLoop = [...deliverBlocks, ...deliverBlocks];
 
   return (
     <main>
@@ -31,52 +34,56 @@ export default function Home() {
               Build High-Performance Websites That Grow Your Business
             </h2>
             <p className="section-lead">
-              Professional Website Design, AI Automation, E-commerce, CRM
-              Systems and Business Solutions for Companies Worldwide.
+              Small and medium scale enterprises for business automation and website
+              development — plus professional design, AI automation, e-commerce, CRM
+              systems and business solutions for companies worldwide.
             </p>
           </div>
-          <div className="deliver-grid">
-            {deliverBlocks.map((block, i) => (
-              <motion.article
-                key={block.title}
-                className={`deliver-card deliver-card--${block.tone}`}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
+        </div>
+
+        <div className="deliver-rail" aria-label="What we deliver">
+          <div className="deliver-rail__track">
+            {deliverLoop.map((block, i) => (
+              <article
+                key={`${block.title}-${i}`}
+                className={`deliver-slide deliver-slide--${block.tone}`}
               >
-                <h3>{block.title}</h3>
-                <p>{block.text}</p>
-              </motion.article>
+                <SafeImage src={block.image} alt="" className="deliver-slide__bg" />
+                <div className="deliver-slide__veil" />
+                <div className="deliver-slide__body">
+                  <h3>{block.title}</h3>
+                  <p>{block.text}</p>
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section work-section" id="work">
-        <div className="container work-layout">
-          <aside className="side-panel side-panel--teal">
-            <p>Portfolio</p>
-            <h3>Real sites. Live motion.</h3>
-            <span>Watch each project scroll — then open the live site.</span>
-          </aside>
-          <div>
-            <div className="section-head">
-              <p className="section-label section-label--catchy">Featured Work</p>
-              <h2 className="section-title">Websites We Have Built</h2>
-            </div>
+      <section className="section work-section work-section--stage" id="work">
+        <div className="container">
+          <div className="section-head center work-section__head">
+            <p className="section-label">Featured Work</p>
+            <h2 className="section-title" style={{ maxWidth: "18ch", marginInline: "auto" }}>
+              Websites We Have Built
+            </h2>
+            <p className="section-lead" style={{ marginInline: "auto" }}>
+              Full-page previews that rotate and scroll — see the complete build at a glance.
+            </p>
+          </div>
+          <div className="featured-work-grid">
             {projects.map((project, i) => (
-              <PortfolioCard key={project.id} project={project} reverse={i % 2 === 1} />
+              <FeaturedWorkCard key={project.id} project={project} index={i} />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section process-section">
+      <section className="section process-section process-section--luma">
         <div className="container">
           <div className="section-head center">
-            <p className="section-label section-label--catchy">How Ordering Us</p>
-            <h2 className="section-title" style={{ maxWidth: "22ch", marginInline: "auto" }}>
+            <p className="section-label">How Ordering Us</p>
+            <h2 className="section-title" style={{ maxWidth: "20ch", marginInline: "auto" }}>
               Complete the process within{" "}
               <strong className="accent-strong">three days</strong>
             </h2>
@@ -100,11 +107,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section pricing-section" id="pricing">
+      <section className="section pricing-section pricing-section--luma" id="pricing">
         <div className="container">
           <div className="section-head center">
             <p className="section-label">Our Pricing</p>
-            <h2 className="section-title" style={{ maxWidth: "16ch", marginInline: "auto" }}>
+            <h2 className="section-title" style={{ maxWidth: "14ch", marginInline: "auto" }}>
               Clear packages. Bold value.
             </h2>
           </div>
@@ -143,31 +150,32 @@ export default function Home() {
       </section>
 
       <section className="section trusted-section">
-        <div className="container trusted-layout">
-          <aside className="side-panel side-panel--amber">
-            <p>Trusted by</p>
-            <h3>Inspired by UK leaders</h3>
-            <span>Retail · Finance · Travel · Media · Tech</span>
-          </aside>
-          <div>
-            <div className="section-head">
-              <p className="section-label section-label--catchy">Brand Standard</p>
-              <h2 className="section-title">Designed to the level of the best</h2>
-              <p className="section-lead">
-                We design to the standard of leading brands across every major UK category.
-              </p>
-            </div>
-            <div className="marquee">
-              <div className="marquee-track">
-                {[...trustedCompanies, ...trustedCompanies].map((c, i) => (
-                  <div className={`trust-chip trust-chip--${i % 4}`} key={`${c.name}-${i}`}>
-                    <strong>{c.name}</strong>
-                    <span>{c.category}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+        <div className="container">
+          <div className="section-head center">
+            <p className="section-label">Brand Standard</p>
+            <h2 className="section-title" style={{ maxWidth: "16ch", marginInline: "auto" }}>
+              Designed to the level of the best
+            </h2>
           </div>
+          <div className="trust-row">
+            {trustedCompanies.map((c, i) => (
+              <div className={`trust-chip trust-chip--${i % 5}`} key={c.name}>
+                <strong>{c.name}</strong>
+                <span>{c.category}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="social-band">
+        <div className="container social-band__inner">
+          <div>
+            <p className="section-label">Connect With Us</p>
+            <h2>Follow Automexa on social</h2>
+            <p>Facebook · TikTok · Instagram · YouTube · LinkedIn</p>
+          </div>
+          <SocialLinks variant="icons" />
         </div>
       </section>
 

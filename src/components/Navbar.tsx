@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Menu, X, Sparkles } from "lucide-react";
 import { navLinks } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
+import BrandLogo from "./BrandLogo";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -27,9 +28,7 @@ export default function Navbar() {
   return (
     <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="container navbar__inner">
-        <Link to="/" className="navbar__logo" onClick={() => setOpen(false)}>
-          Auto<span>mexa</span>
-        </Link>
+        <BrandLogo variant="light" onClick={() => setOpen(false)} />
 
         <nav className={`navbar__links ${open ? "is-open" : ""}`}>
           {navLinks.map((link) => (

@@ -56,7 +56,7 @@ export default function QuoteModal() {
 
             {sent ? (
               <div className="form-success">
-                <CheckCircle2 size={52} color="#00c2a8" />
+                <CheckCircle2 size={52} color="#2563EB" />
                 <h3>Request Ready to Send</h3>
                 <p className="modal-sub">
                   Your email client should open with your details. We typically reply within a few hours.

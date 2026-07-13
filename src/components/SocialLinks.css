@@ -1,0 +1,53 @@
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.social-links__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  color: #fff;
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.social-links--icons .social-links__item {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+}
+
+.social-links--pills .social-links__item {
+  padding: 0.75rem 1.1rem;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.social-links__item:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.08);
+  box-shadow: 0 10px 24px rgba(11, 58, 110, 0.22);
+}
+
+.social-links__item--facebook {
+  background: #1877f2;
+}
+
+.social-links__item--tiktok {
+  background: #010101;
+}
+
+.social-links__item--instagram {
+  background: linear-gradient(45deg, #f58529, #dd2a7b 45%, #8134af 70%, #515bd4);
+}
+
+.social-links__item--youtube {
+  background: #ff0000;
+}
+
+.social-links__item--linkedin {
+  background: #0a66c2;
+}
