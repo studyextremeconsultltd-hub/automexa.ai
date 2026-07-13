@@ -15,19 +15,28 @@
   height: 40px;
   flex-shrink: 0;
   object-fit: contain;
-  filter: drop-shadow(0 6px 14px rgba(37, 99, 235, 0.35));
+  filter: drop-shadow(0 6px 16px rgba(59, 130, 246, 0.4));
 }
 
+/* Single brand palette — matches header logo (light blue accent) */
 .brand-logo__word {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.5rem;
   letter-spacing: -0.03em;
-  color: #0b3a6e;
+  color: #ffffff;
 }
 
 .brand-logo__word span {
-  color: #2563eb;
+  color: #60a5fa;
+}
+
+.brand-logo--dark .brand-logo__word {
+  color: #0b3a6e;
+}
+
+.brand-logo--dark .brand-logo__word span {
+  color: #3b82f6;
 }
 
 .brand-logo--light .brand-logo__word {
@@ -35,18 +44,9 @@
 }
 
 .brand-logo--light .brand-logo__word span {
-  color: #93c5fd;
+  color: #60a5fa;
 }
 
 .brand-logo--light .brand-logo__mark {
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35)) brightness(1.05);
-}
-
-.brand-logo.hero__brand-logo .brand-logo__word {
-  font-size: clamp(1.65rem, 3.2vw, 2.15rem);
-}
-
-.brand-logo.hero__brand-logo .brand-logo__mark {
-  width: clamp(42px, 5vw, 52px);
-  height: clamp(42px, 5vw, 52px);
 }

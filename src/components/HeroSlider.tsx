@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { heroSlides, mosaicPool } from "../data/content";
-import BrandLogo from "./BrandLogo";
 import SafeImage from "./SafeImage";
 import "./HeroSlider.css";
 
@@ -94,15 +93,6 @@ export default function HeroSlider() {
 
       <div className="hero__below">
         <div className="container hero__below-inner">
-          <motion.div
-            className="hero__brand-block"
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55 }}
-          >
-            <BrandLogo to="" variant="dark" className="hero__brand-logo" />
-          </motion.div>
-
           <AnimatePresence mode="wait">
             <motion.h1
               key={`t-${slide.id}`}
@@ -115,7 +105,7 @@ export default function HeroSlider() {
             </motion.h1>
           </AnimatePresence>
 
-          <a href="#work" className="btn btn-secondary hero__work-btn">
+          <a href="#work" className="btn btn-primary hero__work-btn">
             See Our Work
             <ArrowRight size={16} />
           </a>

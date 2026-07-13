@@ -208,8 +208,8 @@
 
 .work-section--stage {
   background:
-    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(37, 99, 235, 0.22), transparent 55%),
-    linear-gradient(180deg, #071225 0%, #0b1a33 55%, #0a1628 100%);
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(96, 165, 250, 0.28), transparent 55%),
+    linear-gradient(180deg, #0b3a6e 0%, #124a86 55%, #1e5aa0 100%);
   color: #fff;
 }
 
@@ -272,20 +272,20 @@
 
 .side-panel--teal,
 .side-panel--blue {
-  background: linear-gradient(165deg, #2563eb, #0b3a6e);
+  background: linear-gradient(165deg, #60a5fa, #2563eb);
   color: #fff;
 }
 
 .side-panel--amber,
 .side-panel--sky {
-  background: linear-gradient(165deg, #60a5fa, #0284c7);
-  color: #071a2b;
+  background: linear-gradient(165deg, #93c5fd, #3b82f6);
+  color: #0b3a6e;
 }
 
 .process-section {
   background:
-    radial-gradient(ellipse 50% 60% at 0% 0%, rgba(37, 99, 235, 0.22), transparent),
-    linear-gradient(180deg, #0a1628 0%, #071225 100%);
+    radial-gradient(ellipse 50% 60% at 0% 0%, rgba(96, 165, 250, 0.28), transparent),
+    linear-gradient(180deg, #0b3a6e 0%, #124a86 100%);
   color: var(--white);
 }
 
@@ -448,19 +448,19 @@
 
 .price-card--teal,
 .price-card--blue {
-  background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(165deg, #60a5fa 0%, #3b82f6 100%);
 }
 
 .price-card--amber,
 .price-card--navy {
-  background: linear-gradient(165deg, #1e40af 0%, #0b3a6e 100%);
+  background: linear-gradient(165deg, #3b82f6 0%, #2563eb 100%);
   color: #fff;
 }
 
 .price-card--coral,
 .price-card--sky {
-  background: linear-gradient(165deg, #7dd3fc 0%, #0284c7 100%);
-  color: #071a2b;
+  background: linear-gradient(165deg, #93c5fd 0%, #60a5fa 100%);
+  color: #0b3a6e;
 }
 
 .price-card--featured {

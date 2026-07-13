@@ -3,9 +3,9 @@
   overflow: hidden;
   padding: clamp(4.5rem, 9vw, 7rem) 0;
   background:
-    radial-gradient(ellipse 50% 70% at 80% 40%, rgba(37, 99, 235, 0.18), transparent 55%),
-    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(14, 165, 233, 0.12), transparent 50%),
-    linear-gradient(160deg, #050b18 0%, #0a1628 50%, #0b1f3a 100%);
+    radial-gradient(ellipse 50% 70% at 80% 40%, rgba(96, 165, 250, 0.25), transparent 55%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(147, 197, 253, 0.14), transparent 50%),
+    linear-gradient(160deg, #0b3a6e 0%, #1d4ed8 50%, #3b82f6 100%);
   color: #fff;
 }
 
@@ -13,8 +13,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(5, 11, 24, 0.75), rgba(5, 11, 24, 0.15) 40%, transparent),
-    radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(11, 58, 110, 0.65), rgba(11, 58, 110, 0.12) 40%, transparent),
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: auto, 22px 22px;
   pointer-events: none;
 }
