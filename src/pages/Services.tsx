@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import PageGallery from "../components/PageGallery";
-import SafeImage from "../components/SafeImage";
+import SmartVideo from "../components/SmartVideo";
 import { pageGalleries, services } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
 import "./InnerPages.css";
@@ -17,8 +17,9 @@ export default function Services() {
           </p>
           <h1>Everything you need to grow online</h1>
           <p>
-            Professional Website Design, AI Automation, E-commerce, CRM Systems and
-            Business Solutions for Companies Worldwide.
+            AI Automation & Chatbots, System Integrations, Professional Website
+            Design, CRM & SaaS Platforms, E-commerce and Business Solutions — for
+            companies worldwide.
           </p>
         </div>
       </section>
@@ -41,7 +42,7 @@ export default function Services() {
               transition={{ duration: 0.5 }}
             >
               <div className="service-row__media">
-                <SafeImage src={service.image} alt={service.title} />
+                <SmartVideo src={service.video} poster={service.image} />
               </div>
               <div className="service-row__body">
                 <span className="service-index">0{i + 1}</span>

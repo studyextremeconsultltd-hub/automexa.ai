@@ -13,8 +13,9 @@ export default function Footer() {
           <div className="footer-brand">
             <BrandLogo variant="light" />
             <p>
-              High-performance websites, AI automation, e-commerce and CRM
-              systems for companies worldwide — delivered in days, not months.
+              SaaS & AI automation company — intelligent chatbots, system
+              integrations, high-performance websites, e-commerce and custom CRM
+              apps for companies worldwide. Delivered in days, secured from day one.
             </p>
           </div>
 
@@ -29,10 +30,11 @@ export default function Footer() {
 
           <div className="footer-col">
             <h4>Services</h4>
+            <Link to="/services">AI Automation & Chatbots</Link>
+            <Link to="/services">AI Integrations</Link>
             <Link to="/services">Website Design</Link>
-            <Link to="/services">AI Automation</Link>
+            <Link to="/services">CRM & SaaS Platforms</Link>
             <Link to="/services">E-commerce</Link>
-            <Link to="/services">CRM Systems</Link>
             <button
               type="button"
               onClick={openQuote}
@@ -65,7 +67,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Automexa. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} AutoMexa. All rights reserved.</span>
           <span>Professional Website Design · AI Automation · Business Solutions</span>
         </div>
       </div>

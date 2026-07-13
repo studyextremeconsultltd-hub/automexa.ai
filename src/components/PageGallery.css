@@ -49,15 +49,22 @@
   box-shadow: var(--shadow-lg);
 }
 
-.page-gallery__card img {
+.page-gallery__card img,
+.page-gallery__card video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.55s ease;
 }
 
-.page-gallery__card:hover img {
+.page-gallery__card:hover img,
+.page-gallery__card:hover video {
   transform: scale(1.06);
+}
+
+.page-gallery__card .smart-video {
+  position: absolute;
+  inset: 0;
 }
 
 .page-gallery__card figcaption {

@@ -64,7 +64,7 @@ export default function SocialLinks({ variant = "icons", className = "" }: Props
           key={key}
           href={href}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           aria-label={label}
           className={`social-links__item social-links__item--${key}`}
         >

@@ -4,6 +4,7 @@ import { CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
 import PageGallery from "../components/PageGallery";
 import SocialLinks from "../components/SocialLinks";
 import { brand, pageGalleries, websiteTypes } from "../data/content";
+import { sanitizeField } from "../utils/sanitize";
 import "./InnerPages.css";
 
 export default function Contact() {
@@ -12,10 +13,10 @@ export default function Contact() {
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
-    const name = String(form.get("name") || "");
-    const phone = String(form.get("phone") || "");
-    const type = String(form.get("type") || "");
-    const queries = String(form.get("queries") || "");
+    const name = sanitizeField(form.get("name"), 100);
+    const phone = sanitizeField(form.get("phone"), 30);
+    const type = sanitizeField(form.get("type"), 60);
+    const queries = sanitizeField(form.get("queries"), 1000);
     const subject = encodeURIComponent(`Contact — ${name}`);
     const body = encodeURIComponent(
       `Name: ${name}\nPhone: ${phone}\nWebsite Type: ${type}\n\nQueries:\n${queries}`,
@@ -53,7 +54,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2>Reach Automexa</h2>
+            <h2>Reach AutoMexa</h2>
             <p>
               Prefer a quick chat? Email or call us — or send the form and we will
               prepare your free quote.
@@ -118,11 +119,28 @@ export default function Contact() {
                 <form onSubmit={handleSubmit}>
                   <div className="form-group">
                     <label htmlFor="contact-name">Full Name</label>
-                    <input id="contact-name" name="name" required placeholder="Your name" />
+                    <input
+                      id="contact-name"
+                      name="name"
+                      required
+                      placeholder="Your name"
+                      maxLength={100}
+                      autoComplete="name"
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="contact-phone">Phone Number</label>
-                    <input id="contact-phone" name="phone" type="tel" required placeholder="+44..." />
+                    <input
+                      id="contact-phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      placeholder="+44..."
+                      maxLength={30}
+                      pattern="[+0-9()\-\s]{7,30}"
+                      title="Please enter a valid phone number"
+                      autoComplete="tel"
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="contact-type">Type of Website</label>
@@ -144,6 +162,7 @@ export default function Contact() {
                       name="queries"
                       required
                       placeholder="Tell us about your project..."
+                      maxLength={1000}
                     />
                   </div>
                   <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>

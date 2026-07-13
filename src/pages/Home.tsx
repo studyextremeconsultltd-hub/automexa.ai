@@ -1,17 +1,17 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import ExpertiseShowcase from "../components/ExpertiseShowcase";
 import HeroSlider from "../components/HeroSlider";
 import HighlightSlider from "../components/HighlightSlider";
 import MotionGallery from "../components/MotionGallery";
 import { FeaturedWorkCard } from "../components/PortfolioCard";
-import SafeImage from "../components/SafeImage";
+import SmartVideo from "../components/SmartVideo";
 import SocialLinks from "../components/SocialLinks";
 import {
   deliverBlocks,
   pricingPlans,
   processSteps,
   projects,
-  trustedCompanies,
 } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
 import "./Home.css";
@@ -31,12 +31,12 @@ export default function Home() {
           <div className="section-head">
             <p className="section-label">What We Deliver</p>
             <h2 className="section-title">
-              Build High-Performance Websites That Grow Your Business
+              AI Automation, SaaS Platforms & Websites That Grow Your Business
             </h2>
             <p className="section-lead" style={{ fontWeight: 700 }}>
-              Small and medium scale enterprises for business automation and website
-              development — plus professional design, AI automation, e-commerce, CRM
-              systems and business solutions for companies worldwide.
+              AutoMexa is a SaaS and AI automation company — we design professional
+              websites, build custom CRM apps, and integrate intelligent automation
+              for businesses worldwide. One partner, end to end.
             </p>
           </div>
         </div>
@@ -48,7 +48,7 @@ export default function Home() {
                 key={`${block.title}-${i}`}
                 className={`deliver-slide deliver-slide--${block.tone}`}
               >
-                <SafeImage src={block.image} alt="" className="deliver-slide__bg" />
+                <SmartVideo src={block.video} poster={block.image} className="deliver-slide__bg" />
                 <div className="deliver-slide__veil" />
                 <div className="deliver-slide__body">
                   <h3>{block.title}</h3>
@@ -59,6 +59,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <ExpertiseShowcase />
 
       <section className="section work-section work-section--stage" id="work">
         <div className="container">
@@ -151,30 +153,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section trusted-section">
-        <div className="container">
-          <div className="section-head center">
-            <p className="section-label">Brand Standard</p>
-            <h2 className="section-title" style={{ maxWidth: "16ch", marginInline: "auto" }}>
-              Designed to the level of the best
-            </h2>
-          </div>
-          <div className="trust-row">
-            {trustedCompanies.map((c, i) => (
-              <div className={`trust-chip trust-chip--${i % 5}`} key={c.name}>
-                <strong>{c.name}</strong>
-                <span>{c.category}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="social-band">
         <div className="container social-band__inner">
           <div>
             <p className="section-label">Connect With Us</p>
-            <h2>Follow Automexa on social</h2>
+            <h2>Follow AutoMexa on social</h2>
             <p>Facebook · TikTok · Instagram · YouTube · LinkedIn</p>
           </div>
           <SocialLinks variant="icons" />

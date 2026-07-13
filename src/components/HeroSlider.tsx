@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { heroSlides, mosaicPool } from "../data/content";
+import { heroSlides, heroTileVideos, mosaicPool } from "../data/content";
 import SafeImage from "./SafeImage";
 import "./HeroSlider.css";
 
@@ -54,28 +54,61 @@ export default function HeroSlider() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
             style={{ backgroundImage: `url(${slide.image})` }}
-          />
+          >
+            {slide.video && (
+              <video
+                className="hero__bg-video"
+                src={slide.video}
+                poster={slide.image}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+              />
+            )}
+          </motion.div>
         </AnimatePresence>
         <div className="hero__veil" />
         <div className="hero__grain" />
 
         <div className="hero__stage" aria-hidden>
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className={`mosaic-tile mosaic-tile--${tileShapes[i]} mosaic-tile--${i + 1}`}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={tileSrc(i)}
+          {Array.from({ length: 10 }).map((_, i) =>
+            heroTileVideos[i] ? (
+              <div
+                key={i}
+                className={`mosaic-tile mosaic-tile--${tileShapes[i]} mosaic-tile--${i + 1}`}
+              >
+                <video
                   className="mosaic-tile__media"
-                  initial={{ opacity: 0, scale: 1.1 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.65 }}
-                >
-                  <SafeImage src={tileSrc(i)} alt="" loading="eager" />
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          ))}
+                  src={heroTileVideos[i]}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
+              </div>
+            ) : (
+              <div
+                key={i}
+                className={`mosaic-tile mosaic-tile--${tileShapes[i]} mosaic-tile--${i + 1}`}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={tileSrc(i)}
+                    className="mosaic-tile__media"
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.65 }}
+                  >
+                    <SafeImage src={tileSrc(i)} alt="" loading="eager" />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            ),
+          )}
         </div>
 
         <div className="hero__caption">

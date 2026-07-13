@@ -24,7 +24,7 @@ export default function Portfolio() {
 
       <PageGallery
         title="Craft behind every launch"
-        subtitle="Visual direction, interface detail, and growth-ready layouts from real Automexa builds."
+        subtitle="Visual direction, interface detail, and growth-ready layouts from real AutoMexa builds."
         images={pageGalleries.portfolio}
       />
 

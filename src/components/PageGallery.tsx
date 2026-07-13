@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import SafeImage from "./SafeImage";
+import SmartVideo from "./SmartVideo";
 import "./PageGallery.css";
 
-export type GalleryImage = { src: string; label: string };
+export type GalleryImage = { src: string; video?: string; label: string };
 
 export default function PageGallery({
   title,
@@ -31,7 +32,11 @@ export default function PageGallery({
               viewport={{ once: true }}
               transition={{ delay: i * 0.06 }}
             >
-              <SafeImage src={img.src} alt={img.label} />
+              {img.video ? (
+                <SmartVideo src={img.video} poster={img.src} />
+              ) : (
+                <SafeImage src={img.src} alt={img.label} />
+              )}
               <figcaption>{img.label}</figcaption>
             </motion.figure>
           ))}

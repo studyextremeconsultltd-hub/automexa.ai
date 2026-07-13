@@ -1,4 +1,4 @@
-# Automexa
+# AutoMexa
 
 High-performance websites, AI automation, e-commerce & CRM — delivered within 3 days.
 

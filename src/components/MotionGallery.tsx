@@ -1,28 +1,30 @@
 import { motion } from "framer-motion";
-import { mosaicPool } from "../data/content";
-import SafeImage from "./SafeImage";
+import { motionClips } from "../data/content";
+import SmartVideo from "./SmartVideo";
 import "./MotionGallery.css";
 
+type Clip = (typeof motionClips)[number];
+
 function Column({
-  images,
+  items,
   direction,
   duration,
 }: {
-  images: string[];
+  items: Clip[];
   direction: "up" | "down";
   duration: number;
 }) {
-  const doubled = [...images, ...images];
+  const doubled = [...items, ...items];
   return (
     <div className={`motion-col motion-col--${direction}`}>
       <div className="motion-col__track" style={{ animationDuration: `${duration}s` }}>
-        {doubled.map((src, i) => (
+        {doubled.map((item, i) => (
           <motion.figure
-            key={`${src}-${i}`}
+            key={`${item.video}-${i}`}
             className="motion-card"
             whileHover={{ scale: 1.03 }}
           >
-            <SafeImage src={src} alt="" />
+            <SmartVideo src={item.video} poster={item.poster} />
             <div className="motion-card__glow" />
           </motion.figure>
         ))}
@@ -32,8 +34,8 @@ function Column({
 }
 
 export default function MotionGallery() {
-  const left = mosaicPool.filter((_, i) => i % 2 === 0);
-  const right = mosaicPool.filter((_, i) => i % 2 === 1);
+  const left = motionClips.filter((_, i) => i % 2 === 0);
+  const right = motionClips.filter((_, i) => i % 2 === 1);
 
   return (
     <section className="motion-gallery">
@@ -43,7 +45,7 @@ export default function MotionGallery() {
           <p className="section-label">Cinematic Craft</p>
           <h2 className="section-title">Motion that makes your brand feel alive</h2>
           <p className="section-lead">
-            Every Automexa site is built to feel premium, dynamic, and impossible to ignore —
+            Every AutoMexa site is built to feel premium, dynamic, and impossible to ignore —
             so visitors want to order on first sight.
           </p>
           <div className="motion-gallery__chips">
@@ -53,8 +55,8 @@ export default function MotionGallery() {
           </div>
         </div>
         <div className="motion-gallery__stage" aria-hidden>
-          <Column images={left} direction="up" duration={28} />
-          <Column images={right} direction="down" duration={34} />
+          <Column items={left} direction="up" duration={28} />
+          <Column items={right} direction="down" duration={34} />
         </div>
       </div>
     </section>

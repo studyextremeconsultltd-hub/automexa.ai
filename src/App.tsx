@@ -4,6 +4,7 @@ import { QuoteProvider } from "./context/QuoteContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import QuoteModal from "./components/QuoteModal";
+import WhatsAppButton from "./components/WhatsAppButton";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
         </Routes>
         <Footer />
+        <WhatsAppButton />
       </QuoteProvider>
     </BrowserRouter>
   );

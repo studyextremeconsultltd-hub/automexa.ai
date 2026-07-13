@@ -1,0 +1,308 @@
+.logo-mark {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.logo-mark svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ---- Signature: Living Circuit A ---- */
+.sig-halo--outer {
+  transform-origin: 36px 36px;
+  animation: sig-spin 9s linear infinite;
+}
+
+.sig-halo--inner {
+  transform-origin: 36px 36px;
+  animation: sig-spin 6s linear infinite reverse;
+}
+
+/* Triangle perimeter ≈ 132; comet = short bright dash chased around the track */
+.sig-comet {
+  stroke-dasharray: 26 106;
+  animation: sig-race 2.6s linear infinite;
+}
+
+.sig-crossbar {
+  stroke-dasharray: 19 19;
+  animation: sig-crossbar-sweep 2.6s linear infinite;
+  opacity: 0.9;
+}
+
+.sig-node {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.sig-node--1 {
+  animation: sig-node-flare 2.6s ease-in-out infinite;
+}
+
+.sig-node--2 {
+  animation: sig-node-flare 2.6s ease-in-out infinite 0.87s;
+}
+
+.sig-node--3 {
+  animation: sig-node-flare 2.6s ease-in-out infinite 1.73s;
+}
+
+.sig-core {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sig-core-breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes sig-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sig-race {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -132;
+  }
+}
+
+@keyframes sig-crossbar-sweep {
+  0%,
+  55% {
+    stroke-dashoffset: 19;
+    opacity: 0.35;
+  }
+  70%,
+  82% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -19;
+    opacity: 0.35;
+  }
+}
+
+@keyframes sig-node-flare {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+  12% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+  30% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes sig-core-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.6);
+  }
+}
+
+/* ---- Pulse: AI neural node ---- */
+.logo-mark__ring--1 {
+  transform-origin: 24px 24px;
+  animation: logo-ring-pulse 2.4s ease-out infinite;
+}
+
+.logo-mark__ring--2 {
+  transform-origin: 24px 24px;
+  animation: logo-ring-pulse 2.4s ease-out infinite 0.4s;
+}
+
+.logo-mark__ring--3 {
+  transform-origin: 24px 24px;
+  animation: logo-ring-pulse 2.4s ease-out infinite 0.8s;
+}
+
+.logo-mark__core {
+  transform-origin: 24px 24px;
+  animation: logo-core-glow 1.8s ease-in-out infinite;
+}
+
+.logo-mark__node--1 {
+  animation: logo-node-pop 2s ease-in-out infinite;
+}
+
+.logo-mark__node--2 {
+  animation: logo-node-pop 2s ease-in-out infinite 0.35s;
+}
+
+.logo-mark__node--3 {
+  animation: logo-node-pop 2s ease-in-out infinite 0.7s;
+}
+
+/* ---- Hex: automation bolt ---- */
+.logo-mark__hex {
+  transform-origin: 24px 24px;
+  animation: logo-hex-float 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(37, 99, 235, 0.45));
+}
+
+.logo-mark__bolt {
+  transform-origin: 24px 24px;
+  animation: logo-bolt-flash 2.2s ease-in-out infinite;
+}
+
+.logo-mark__spark--1 {
+  animation: logo-spark 1.6s ease-in-out infinite;
+}
+
+.logo-mark__spark--2 {
+  animation: logo-spark 1.6s ease-in-out infinite 0.5s;
+}
+
+.logo-mark__spark--3 {
+  animation: logo-spark 1.6s ease-in-out infinite 1s;
+}
+
+/* ---- Orbit: SaaS letter A ---- */
+.logo-mark__orbit--1 {
+  transform-origin: 24px 24px;
+  animation: logo-orbit-spin 6s linear infinite;
+}
+
+.logo-mark__orbit--2 {
+  transform-origin: 24px 24px;
+  animation: logo-orbit-spin 8s linear infinite reverse;
+}
+
+.logo-mark__letter {
+  filter: drop-shadow(0 2px 8px rgba(37, 99, 235, 0.35));
+}
+
+.logo-mark__sat--1 {
+  animation: logo-sat-orbit 4s linear infinite;
+  transform-origin: 24px 24px;
+}
+
+.logo-mark__sat--2 {
+  animation: logo-sat-orbit 5.5s linear infinite reverse;
+  transform-origin: 24px 24px;
+}
+
+.logo-mark__sat--3 {
+  animation: logo-sat-pop 2s ease-in-out infinite;
+}
+
+@keyframes logo-ring-pulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
+@keyframes logo-core-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px rgba(147, 197, 253, 0.8));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(59, 130, 246, 1));
+  }
+}
+
+@keyframes logo-node-pop {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.7;
+  }
+}
+
+@keyframes logo-hex-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(2deg);
+  }
+}
+
+@keyframes logo-bolt-flash {
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+  }
+  50% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 8px rgba(147, 197, 253, 1));
+  }
+}
+
+@keyframes logo-spark {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+@keyframes logo-orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes logo-sat-orbit {
+  from {
+    transform: rotate(0deg) translateX(14px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(14px) rotate(-360deg);
+  }
+}
+
+@keyframes logo-sat-pop {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-mark * {
+    animation: none !important;
+  }
+}

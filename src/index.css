@@ -63,6 +63,20 @@ img {
   display: block;
 }
 
+.smart-video {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.smart-video video,
+.smart-video img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 a {
   color: inherit;
   text-decoration: none;

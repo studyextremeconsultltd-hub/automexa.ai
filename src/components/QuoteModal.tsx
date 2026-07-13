@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, X } from "lucide-react";
 import { brand, websiteTypes } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
+import { sanitizeField } from "../utils/sanitize";
 
 export default function QuoteModal() {
   const { isOpen, closeQuote } = useQuote();
@@ -11,10 +12,10 @@ export default function QuoteModal() {
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
-    const name = String(form.get("name") || "");
-    const phone = String(form.get("phone") || "");
-    const type = String(form.get("type") || "");
-    const queries = String(form.get("queries") || "");
+    const name = sanitizeField(form.get("name"), 100);
+    const phone = sanitizeField(form.get("phone"), 30);
+    const type = sanitizeField(form.get("type"), 60);
+    const queries = sanitizeField(form.get("queries"), 1000);
     const subject = encodeURIComponent(`Free Quote Request — ${name}`);
     const body = encodeURIComponent(
       `Name: ${name}\nPhone: ${phone}\nWebsite Type: ${type}\n\nQueries:\n${queries}`,
@@ -74,11 +75,29 @@ export default function QuoteModal() {
                 <form onSubmit={handleSubmit}>
                   <div className="form-group">
                     <label htmlFor="quote-name">Full Name</label>
-                    <input id="quote-name" name="name" type="text" placeholder="Jane Smith" required />
+                    <input
+                      id="quote-name"
+                      name="name"
+                      type="text"
+                      placeholder="Jane Smith"
+                      required
+                      maxLength={100}
+                      autoComplete="name"
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="quote-phone">Phone Number</label>
-                    <input id="quote-phone" name="phone" type="tel" placeholder="+44 7700 900123" required />
+                    <input
+                      id="quote-phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="+44 7700 900123"
+                      required
+                      maxLength={30}
+                      pattern="[+0-9()\-\s]{7,30}"
+                      title="Please enter a valid phone number"
+                      autoComplete="tel"
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="quote-type">Type of Website</label>
@@ -100,6 +119,7 @@ export default function QuoteModal() {
                       name="queries"
                       placeholder="Share your goals, timeline, and any must-have features..."
                       required
+                      maxLength={1000}
                     />
                   </div>
                   <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>

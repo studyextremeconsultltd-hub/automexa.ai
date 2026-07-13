@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { Target, Users, Rocket, HeartHandshake } from "lucide-react";
+import LogoShowcase from "../components/LogoShowcase";
 import PageGallery from "../components/PageGallery";
-import SafeImage from "../components/SafeImage";
-import { pageGalleries } from "../data/content";
+import SmartVideo from "../components/SmartVideo";
+import { clips, pageGalleries } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
 import "./InnerPages.css";
 
@@ -39,16 +40,16 @@ export default function About() {
           <p className="section-label" style={{ color: "var(--blue)" }}>
             About Us
           </p>
-          <h1>Automexa</h1>
+          <h1>AutoMexa</h1>
           <p>
-            We help ambitious businesses look premium online — with websites, AI
-            automation, and digital systems that convert.
+            A SaaS and AI automation company — we design premium websites, build
+            custom CRM apps, and integrate intelligent automation that converts.
           </p>
         </div>
       </section>
 
       <PageGallery
-        title="Inside the Automexa studio"
+        title="Inside the AutoMexa studio"
         subtitle="People, process, and spaces that shape every launch — not recycled landing-page stock."
         images={pageGalleries.about}
       />
@@ -56,23 +57,27 @@ export default function About() {
       <section className="section">
         <div className="container about-story">
           <div className="about-story__media">
-            <SafeImage
-              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1600&q=90&fm=jpg"
-              alt="Automexa team collaborating"
+            <SmartVideo
+              src={clips.teamMeeting}
+              poster="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1600&q=90&fm=jpg"
             />
           </div>
           <div>
             <p className="section-label">Our Story</p>
             <h2 className="section-title">Design that sells. Delivery that keeps pace.</h2>
             <p className="section-lead" style={{ maxWidth: "none" }}>
-              Automexa was built for founders and growing companies who need a serious
-              online presence — without waiting months or paying agency markups. We
-              combine modern design, AI-assisted workflows, and a proven three-to-seven-day
-              delivery model so you can go live fast and start winning clients sooner.
+              AutoMexa was built for founders and growing companies who need a serious
+              digital backbone — without waiting months or paying agency markups. We are
+              specialists in AI automation, system integrations, and website design: we
+              connect your tools, automate your workflows with AI agents and chatbots,
+              and ship secure, conversion-led websites and CRM apps in days. Every build
+              is security-hardened from day one, so you scale with confidence.
             </p>
           </div>
         </div>
       </section>
+
+      <LogoShowcase />
 
       <section className="section values-section">
         <div className="container">
