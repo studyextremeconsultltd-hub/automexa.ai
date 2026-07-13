@@ -78,6 +78,27 @@ export default function HeroSlider() {
           ))}
         </div>
 
+        <div className="hero__caption">
+          <div className="container hero__caption-inner">
+            <AnimatePresence mode="wait">
+              <motion.h1
+                key={`t-${slide.id}`}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.4 }}
+              >
+                {slide.title}
+              </motion.h1>
+            </AnimatePresence>
+
+            <a href="#work" className="btn btn-primary hero__work-btn">
+              See Our Work
+              <ArrowRight size={16} />
+            </a>
+          </div>
+        </div>
+
         <div className="hero__dots hero__dots--overlay">
           {heroSlides.map((s, i) => (
             <button
@@ -88,27 +109,6 @@ export default function HeroSlider() {
               onClick={() => setIndex(i)}
             />
           ))}
-        </div>
-      </div>
-
-      <div className="hero__below">
-        <div className="container hero__below-inner">
-          <AnimatePresence mode="wait">
-            <motion.h1
-              key={`t-${slide.id}`}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.4 }}
-            >
-              {slide.title}
-            </motion.h1>
-          </AnimatePresence>
-
-          <a href="#work" className="btn btn-primary hero__work-btn">
-            See Our Work
-            <ArrowRight size={16} />
-          </a>
         </div>
       </div>
     </section>

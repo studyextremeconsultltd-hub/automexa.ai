@@ -33,7 +33,7 @@ export default function Home() {
             <h2 className="section-title">
               Build High-Performance Websites That Grow Your Business
             </h2>
-            <p className="section-lead">
+            <p className="section-lead" style={{ fontWeight: 700 }}>
               Small and medium scale enterprises for business automation and website
               development — plus professional design, AI automation, e-commerce, CRM
               systems and business solutions for companies worldwide.
@@ -107,33 +107,35 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section pricing-section pricing-section--luma" id="pricing">
+      <section className="section packages-section" id="packages">
         <div className="container">
           <div className="section-head center">
-            <p className="section-label">Our Pricing</p>
-            <h2 className="section-title" style={{ maxWidth: "14ch", marginInline: "auto" }}>
-              Clear packages. Bold value.
+            <p className="section-label">Our Packages</p>
+            <h2 className="section-title" style={{ maxWidth: "16ch", marginInline: "auto" }}>
+              Choose the package that fits your business
             </h2>
+            <p className="section-lead" style={{ marginInline: "auto", fontWeight: 700 }}>
+              Clear deliverables, fast launch, and pricing built for SMEs.
+            </p>
           </div>
-          <div className="pricing-grid">
+          <div className="packages-grid">
             {pricingPlans.map((plan, i) => (
               <motion.article
                 key={plan.id}
-                className={`price-card price-card--${plan.theme} ${
-                  plan.featured ? "price-card--featured" : ""
+                className={`package-card package-card--${plan.theme} ${
+                  plan.featured ? "package-card--featured" : ""
                 }`}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
-                {plan.featured && <span className="price-badge">Most Popular</span>}
+                {plan.featured && <span className="package-badge">Most Popular</span>}
                 <h3>{plan.name}</h3>
-                <div className="price-amount">
-                  <span className="currency">{plan.currency}</span>
-                  <span className="value">{plan.price}</span>
-                </div>
-                <p className="price-delivery">{plan.delivery}</p>
+                <p className="package-price">
+                  <span>{plan.currency}</span> {plan.price}
+                </p>
+                <p className="package-delivery">{plan.delivery}</p>
                 <ul>
                   {plan.features.map((f) => (
                     <li key={f}>{f}</li>
