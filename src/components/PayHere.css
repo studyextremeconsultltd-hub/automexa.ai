@@ -1,0 +1,141 @@
+.pay-here {
+  position: relative;
+  padding: clamp(3rem, 6vw, 4.5rem) 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 55% 50% at 15% 0%, rgba(99, 91, 255, 0.14), transparent 55%),
+    linear-gradient(180deg, #f5f9ff 0%, #eef4ff 100%);
+}
+
+.pay-here--teaser {
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+}
+
+.pay-here__teaser-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.pay-here--teaser .section-title {
+  max-width: 16ch;
+  margin-bottom: 0;
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
+}
+
+.pay-here__logo-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.05rem 1.6rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(120deg, #635bff 0%, #3b82f6 45%, #0ea5e9 100%);
+  box-shadow:
+    0 18px 40px rgba(99, 91, 255, 0.4),
+    0 0 0 6px rgba(99, 91, 255, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+}
+
+.pay-here__logo-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 24px 50px rgba(59, 130, 246, 0.45),
+    0 0 0 8px rgba(96, 165, 250, 0.16);
+}
+
+.pay-here__logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  line-height: 1.15;
+}
+
+.pay-here__logo-text strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.8vw, 1.7rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.pay-here__logo-text em {
+  font-style: normal;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.92;
+}
+
+.pay-here__logo-pulse {
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  animation: pay-pulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pay-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+}
+
+.package-card .btn-pay {
+  width: 100%;
+  margin-top: 0.55rem;
+  background: linear-gradient(120deg, #635bff, #3b82f6);
+  color: #fff;
+  border-radius: 14px;
+  padding: 0.95rem 1.1rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.package-card .btn-pay:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+/* WhatsApp floating icon (bottom-right) */
+.whatsapp-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.35rem;
+  z-index: 90;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 14px 32px rgba(37, 211, 102, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.whatsapp-fab:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 18px 40px rgba(37, 211, 102, 0.55);
+}
+
+@media (max-width: 640px) {
+  .pay-here__teaser-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

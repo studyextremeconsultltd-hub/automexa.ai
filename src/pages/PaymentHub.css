@@ -1,0 +1,276 @@
+.pay-hub {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  color: #fff;
+  font-family: var(--font-body, "Outfit", system-ui, sans-serif);
+  display: grid;
+  place-items: center;
+  padding: 1.25rem 1rem 1.75rem;
+}
+
+.pay-hub__bg {
+  position: absolute;
+  inset: -4%;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  animation: pay-hub-drift 18s ease-in-out infinite alternate;
+}
+
+@keyframes pay-hub-drift {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+  to {
+    transform: scale(1.12) translate(-2%, 1.5%);
+  }
+}
+
+.pay-hub__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(160deg, rgba(7, 18, 40, 0.72) 0%, rgba(11, 58, 110, 0.55) 45%, rgba(37, 99, 235, 0.45) 100%),
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(99, 91, 255, 0.35), transparent 60%);
+}
+
+.pay-hub__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.2;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+.pay-hub__panel {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 440px);
+  padding: 1.5rem 1.25rem 1.35rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(18px) saturate(1.2);
+}
+
+.pay-hub__top {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.pay-hub__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fde68a;
+  margin-bottom: 0.55rem;
+}
+
+.pay-hub__top h1 {
+  font-family: var(--font-display, "Unbounded", system-ui, sans-serif);
+  font-size: clamp(2rem, 6vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0 0 0.55rem;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.pay-hub__top h1 span {
+  background: linear-gradient(90deg, #fbbf24, #93c5fd, #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.pay-hub__sub {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.pay-hub__kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #bfdbfe;
+  margin: 1.2rem 0 0.65rem;
+}
+
+.pay-hub__stripe {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  text-align: left;
+  padding: 1.35rem 1.2rem 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(99, 91, 255, 0.95) 0%, rgba(59, 130, 246, 0.92) 55%, rgba(14, 165, 233, 0.9) 100%);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  transition: transform 0.2s ease, filter 0.2s ease;
+  overflow: hidden;
+}
+
+.pay-hub__stripe::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.28) 50%, transparent 70%);
+  transform: translateX(-120%);
+  animation: stripe-shine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes stripe-shine {
+  0%,
+  40% {
+    transform: translateX(-120%);
+  }
+  70%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+.pay-hub__stripe:hover {
+  transform: translateY(-3px) scale(1.01);
+  filter: brightness(1.06);
+}
+
+.pay-hub__stripe-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  background: #fff;
+  color: #4338ca;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.32rem 0.55rem;
+  border-radius: 999px;
+}
+
+.pay-hub__stripe strong {
+  font-family: var(--font-display, "Unbounded", system-ui, sans-serif);
+  font-size: 1.45rem;
+  font-weight: 800;
+  position: relative;
+  z-index: 1;
+}
+
+.pay-hub__stripe em {
+  font-style: normal;
+  font-size: 0.88rem;
+  opacity: 0.95;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+.pay-hub__stripe-cta {
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 800;
+  font-size: 0.92rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  position: relative;
+  z-index: 1;
+}
+
+.pay-hub__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.pay-hub__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.pay-hub__row:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: color-mix(in srgb, var(--pay-accent) 55%, #fff);
+  transform: translateY(-2px);
+}
+
+.pay-hub__row-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.pay-hub__name {
+  font-weight: 800;
+  font-size: 1.02rem;
+}
+
+.pay-hub__blurb {
+  font-size: 0.78rem;
+  opacity: 0.88;
+  font-weight: 600;
+}
+
+.pay-hub__go {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 0.4rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.pay-hub__foot {
+  margin-top: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  opacity: 0.9;
+  font-weight: 600;
+  text-align: center;
+}

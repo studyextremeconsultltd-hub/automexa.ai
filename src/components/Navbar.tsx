@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, CreditCard } from "lucide-react";
 import { navLinks } from "../data/content";
+import { openPayHub } from "../data/payments";
 import { useQuote } from "../context/QuoteContext";
 import BrandLogo from "./BrandLogo";
 import "./Navbar.css";
@@ -24,6 +25,11 @@ export default function Navbar() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  function handlePayNow() {
+    setOpen(false);
+    openPayHub();
+  }
 
   return (
     <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
@@ -52,11 +58,25 @@ export default function Navbar() {
             <Sparkles size={16} />
             Get Free Quote
           </button>
+          <button
+            type="button"
+            className="btn navbar__pay-now navbar__quote-mobile"
+            onClick={handlePayNow}
+          >
+            <CreditCard size={16} />
+            Pay Now
+          </button>
         </nav>
 
         <button type="button" className="btn btn-primary navbar__quote" onClick={openQuote}>
           <Sparkles size={16} />
           Get Free Quote
+        </button>
+
+        <button type="button" className="btn navbar__pay-now" onClick={handlePayNow}>
+          <CreditCard size={18} />
+          <span className="navbar__pay-now-label">Pay Now</span>
+          <span className="navbar__pay-now-shine" aria-hidden />
         </button>
 
         <button
