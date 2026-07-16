@@ -1,90 +1,63 @@
-/** UK payment providers — set live links in `.env.local` */
+/** Automexa payments — Stripe Checkout (dynamic, like Rose Empire). */
+
+import { pricingPlans } from "./content";
 
 const env = (key: string, fallback = "") =>
   (import.meta.env[key] as string | undefined)?.trim() || fallback;
 
-export const paymentConfig = {
-  stripeDeposit: env(
-    "VITE_STRIPE_PAYMENT_LINK",
-    "https://dashboard.stripe.com/login",
-  ),
-  stripeByPlan: {
-    starter: env("VITE_STRIPE_LINK_STARTER", env("VITE_STRIPE_PAYMENT_LINK", "https://dashboard.stripe.com/login")),
-    standard: env("VITE_STRIPE_LINK_STANDARD", env("VITE_STRIPE_PAYMENT_LINK", "https://dashboard.stripe.com/login")),
-    custom: env("VITE_STRIPE_LINK_CUSTOM", env("VITE_STRIPE_PAYMENT_LINK", "https://dashboard.stripe.com/login")),
-  } as Record<string, string>,
-  paypal: env("VITE_PAYPAL_LINK", "https://www.paypal.com/uk/home"),
-  klarna: env("VITE_KLARNA_LINK", "https://www.klarna.com/uk/"),
-  clearpay: env("VITE_CLEARPAY_LINK", "https://www.clearpay.co.uk/en-GB"),
-  applePay: env("VITE_APPLE_PAY_LINK", env("VITE_STRIPE_PAYMENT_LINK", "https://dashboard.stripe.com/login")),
-  googlePay: env("VITE_GOOGLE_PAY_LINK", env("VITE_STRIPE_PAYMENT_LINK", "https://dashboard.stripe.com/login")),
+/** Optional override if you host checkout API elsewhere (Cloudflare Worker, etc.) */
+export const checkoutApiBase = env("VITE_CHECKOUT_API_URL", "").replace(/\/$/, "");
+
+export type CheckoutItem = {
+  productId?: string;
+  name?: string;
+  /** Amount in pence (e.g. 10000 = £100) */
+  unitAmount?: number;
+  quantity?: number;
 };
 
-export type PaymentMethodId =
-  | "stripe"
-  | "paypal"
-  | "klarna"
-  | "clearpay"
-  | "applepay"
-  | "googlepay";
+export async function fetchCheckoutConfig(): Promise<{
+  enabled: boolean;
+  message: string;
+  catalog?: { id: string; name: string; price: number }[];
+}> {
+  const url = `${checkoutApiBase}/api/checkout/config`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Checkout API unavailable");
+  return res.json();
+}
 
-export const paymentMethods: {
-  id: PaymentMethodId;
-  name: string;
-  blurb: string;
-  url: string;
-  accent: string;
-  primary?: boolean;
-}[] = [
-  {
-    id: "stripe",
-    name: "Stripe",
-    blurb: "Primary account · Cards, Apple Pay & Google Pay",
-    url: paymentConfig.stripeDeposit,
-    accent: "#635bff",
-    primary: true,
-  },
-  {
-    id: "paypal",
-    name: "PayPal",
-    blurb: "PayPal balance or linked card",
-    url: paymentConfig.paypal,
-    accent: "#003087",
-  },
-  {
-    id: "klarna",
-    name: "Klarna",
-    blurb: "Pay in 3 · Popular in the UK",
-    url: paymentConfig.klarna,
-    accent: "#ffb3c7",
-  },
-  {
-    id: "clearpay",
-    name: "Clearpay",
-    blurb: "Interest-free instalments",
-    url: paymentConfig.clearpay,
-    accent: "#000000",
-  },
-  {
-    id: "applepay",
-    name: "Apple Pay",
-    blurb: "Checkout via Stripe",
-    url: paymentConfig.applePay,
-    accent: "#111111",
-  },
-  {
-    id: "googlepay",
-    name: "Google Pay",
-    blurb: "Checkout via Stripe",
-    url: paymentConfig.googlePay,
-    accent: "#4285F4",
-  },
-];
+export async function startStripeCheckout(opts: {
+  productId?: string;
+  items?: CheckoutItem[];
+  customerEmail: string;
+}): Promise<string> {
+  const url = `${checkoutApiBase}/api/checkout/create`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      productId: opts.productId,
+      items: opts.items,
+      customerEmail: opts.customerEmail,
+      domain: window.location.origin,
+    }),
+  });
+  const data = await res.json();
+  if (!res.ok || data.status !== "success" || !data.url) {
+    throw new Error(data.message || "Could not start Stripe checkout.");
+  }
+  return data.url as string;
+}
 
-function popupFeatures(width = 560, height = 820) {
+export function openPayHub(planId?: string) {
+  const base = `${window.location.origin}/pay`;
+  const url = planId ? `${base}?plan=${encodeURIComponent(planId)}` : base;
+  const width = 580;
+  const height = 860;
   const left = Math.max(0, Math.round(window.screenX + (window.outerWidth - width) / 2));
   const top = Math.max(0, Math.round(window.screenY + (window.outerHeight - height) / 2));
-  return [
+  const features = [
     `width=${width}`,
     `height=${height}`,
     `left=${left}`,
@@ -96,20 +69,7 @@ function popupFeatures(width = 560, height = 820) {
     "resizable=yes",
     "scrollbars=yes",
   ].join(",");
-}
-
-/** Opens provider URL (Stripe / PayPal / etc.) in a dedicated window */
-export function openPaymentWindow(url: string, title = "Automexa Pay") {
-  const win = window.open(url, title.replace(/\s+/g, "_"), popupFeatures());
-  if (!win) window.open(url, "_blank", "noopener,noreferrer");
-  else win.focus();
-}
-
-/** Opens Automexa Pay Hub (all methods, Stripe primary) in a new window */
-export function openPayHub(planId?: string) {
-  const base = `${window.location.origin}/pay`;
-  const url = planId ? `${base}?plan=${encodeURIComponent(planId)}` : base;
-  const win = window.open(url, "Automexa_Pay_Now", popupFeatures(580, 860));
+  const win = window.open(url, "Automexa_Pay_Now", features);
   if (!win) window.open(url, "_blank", "noopener,noreferrer");
   else win.focus();
 }
@@ -118,6 +78,6 @@ export function openStripeDeposit(planId?: string) {
   openPayHub(planId);
 }
 
-export function stripeUrlForPlan(planId?: string) {
-  return (planId && paymentConfig.stripeByPlan[planId]) || paymentConfig.stripeDeposit;
+export function planLabel(planId?: string | null) {
+  return pricingPlans.find((p) => p.id === planId)?.name;
 }

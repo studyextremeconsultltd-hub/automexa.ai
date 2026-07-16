@@ -1,0 +1,9 @@
+name = "automexa-checkout"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Secrets (never commit):
+#   npx wrangler secret put STRIPE_SECRET_KEY
+# Optional:
+#   npx wrangler secret put SITE_URL
+#   value: https://automexa.co.uk

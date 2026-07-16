@@ -15,8 +15,9 @@ const csp = [
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https:",
   "media-src 'self' https://videos.pexels.com",
-  "connect-src 'self'",
-  "form-action 'self'",
+  "connect-src 'self' https://api.stripe.com https://*.workers.dev",
+  "form-action 'self' https://checkout.stripe.com",
+  "frame-src https://checkout.stripe.com https://js.stripe.com",
   'upgrade-insecure-requests',
 ].join('; ')
 
@@ -36,4 +37,16 @@ function securityHeaders(): Plugin {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), securityHeaders()],
+  server: {
+    proxy: {
+      '/api/checkout': {
+        target: 'http://127.0.0.1:8787',
+        changeOrigin: true,
+      },
+      '/health': {
+        target: 'http://127.0.0.1:8787',
+        changeOrigin: true,
+      },
+    },
+  },
 })

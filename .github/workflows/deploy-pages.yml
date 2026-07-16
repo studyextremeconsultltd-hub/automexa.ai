@@ -32,6 +32,9 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          # Live Stripe checkout API (Cloudflare Worker — same account pattern as Rose Empire)
+          VITE_CHECKOUT_API_URL: https://automexa-checkout.adeelcolchester.workers.dev
         run: npm run build
 
       - name: Upload Pages artifact

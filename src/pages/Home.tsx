@@ -14,6 +14,7 @@ import {
   projects,
 } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
+import { openPayHub } from "../data/payments";
 import "./Home.css";
 
 export default function Home() {
@@ -143,7 +144,11 @@ export default function Home() {
                     <li key={f}>{f}</li>
                   ))}
                 </ul>
-                <button type="button" className="btn btn-order" onClick={openQuote}>
+                <button
+                  type="button"
+                  className="btn btn-order"
+                  onClick={() => openPayHub(plan.id)}
+                >
                   Order Now
                   <ArrowRight size={16} />
                 </button>

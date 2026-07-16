@@ -1,13 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
-import { ShieldCheck, ExternalLink, Sparkles, Lock } from "lucide-react";
 import {
-  openPaymentWindow,
-  paymentMethods,
-  stripeUrlForPlan,
-} from "../data/payments";
-import { mosaicPool } from "../data/content";
+  ShieldCheck,
+  Sparkles,
+  Lock,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
+import { mosaicPool, pricingPlans } from "../data/content";
+import { fetchCheckoutConfig, startStripeCheckout } from "../data/payments";
 import "./PaymentHub.css";
 
 const bgPool = [
@@ -18,11 +21,21 @@ const bgPool = [
 
 export default function PaymentHub() {
   const [params] = useSearchParams();
-  const planId = params.get("plan") || undefined;
-  const stripeUrl = useMemo(() => stripeUrlForPlan(planId), [planId]);
-  const others = paymentMethods.filter((m) => !m.primary);
-  const stripe = paymentMethods.find((m) => m.primary)!;
+  const checkoutState = params.get("checkout");
+  const initialPlan = params.get("plan") || pricingPlans.find((p) => p.featured)?.id || pricingPlans[0]?.id;
+
+  const [planId, setPlanId] = useState(initialPlan || "standard");
+  const [email, setEmail] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [stripeReady, setStripeReady] = useState<boolean | null>(null);
+  const [setupMessage, setSetupMessage] = useState("");
   const [bgIndex, setBgIndex] = useState(0);
+
+  const selected = useMemo(
+    () => pricingPlans.find((p) => p.id === planId) || pricingPlans[0],
+    [planId],
+  );
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -30,6 +43,87 @@ export default function PaymentHub() {
     }, 4500);
     return () => window.clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchCheckoutConfig()
+      .then((cfg) => {
+        if (cancelled) return;
+        setStripeReady(cfg.enabled);
+        setSetupMessage(cfg.message || "");
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setStripeReady(false);
+        setSetupMessage(
+          "Checkout API is offline. Run npm run dev (starts Vite + Stripe checkout server).",
+        );
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  async function pay() {
+    setError("");
+    if (!email.trim() || !email.includes("@")) {
+      setError("Enter a valid email so Stripe can send your receipt.");
+      return;
+    }
+    if (!selected) {
+      setError("Choose a package.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const url = await startStripeCheckout({
+        productId: selected.id,
+        customerEmail: email.trim(),
+      });
+      window.location.href = url;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Checkout failed.");
+      setBusy(false);
+    }
+  }
+
+  if (checkoutState === "success") {
+    return (
+      <div className="pay-hub">
+        <div className="pay-hub__veil" />
+        <div className="pay-hub__panel pay-hub__panel--status">
+          <CheckCircle2 size={40} color="#4ade80" />
+          <h1>Payment received</h1>
+          <p className="pay-hub__sub">
+            Thanks — Stripe confirmed your payment. We’ll follow up by email shortly.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (checkoutState === "cancel") {
+    return (
+      <div className="pay-hub">
+        <div className="pay-hub__veil" />
+        <div className="pay-hub__panel pay-hub__panel--status">
+          <AlertCircle size={40} color="#fde68a" />
+          <h1>Checkout cancelled</h1>
+          <p className="pay-hub__sub">No charge was made. Pick a package below when you’re ready.</p>
+          <button
+            type="button"
+            className="pay-hub__stripe"
+            onClick={() => {
+              window.history.replaceState({}, "", "/pay");
+              window.location.reload();
+            }}
+          >
+            <strong>Try again</strong>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pay-hub">
@@ -57,53 +151,76 @@ export default function PaymentHub() {
             Pay <span>Now</span>
           </h1>
           <p className="pay-hub__sub">
-            Choose your method — Stripe is our primary account for deposits.
+            Choose a package — Stripe handles cards, Apple Pay & Google Pay.
           </p>
         </header>
+
+        <div className="pay-hub__plans" role="radiogroup" aria-label="Package">
+          {pricingPlans.map((plan) => {
+            const active = plan.id === planId;
+            return (
+              <button
+                key={plan.id}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                className={`pay-hub__plan${active ? " is-active" : ""}`}
+                onClick={() => setPlanId(plan.id)}
+              >
+                <span className="pay-hub__plan-name">{plan.name}</span>
+                <span className="pay-hub__plan-price">
+                  £{plan.price}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <label className="pay-hub__field">
+          <span>Email for receipt</span>
+          <input
+            type="email"
+            autoComplete="email"
+            placeholder="you@business.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={busy}
+          />
+        </label>
+
+        {stripeReady === false && (
+          <p className="pay-hub__banner pay-hub__banner--warn">{setupMessage}</p>
+        )}
+        {error && <p className="pay-hub__banner pay-hub__banner--error">{error}</p>}
 
         <button
           type="button"
           className="pay-hub__stripe"
-          onClick={() => openPaymentWindow(stripeUrl, "Stripe — Automexa")}
+          disabled={busy || stripeReady === false}
+          onClick={pay}
         >
           <span className="pay-hub__stripe-badge">Primary · Stripe</span>
-          <strong>Pay with Stripe</strong>
-          <em>{stripe.blurb}</em>
+          <strong>
+            {busy ? "Opening Stripe…" : `Pay £${selected?.price} securely`}
+          </strong>
+          <em>
+            {selected?.name} · Cards, Apple Pay & Google Pay
+          </em>
           <span className="pay-hub__stripe-cta">
-            Continue to official Stripe
-            <ExternalLink size={16} />
+            {busy ? (
+              <>
+                <Loader2 size={16} className="pay-hub__spin" /> Preparing checkout
+              </>
+            ) : (
+              "Continue to official Stripe"
+            )}
           </span>
         </button>
-
-        <p className="pay-hub__kicker">More UK payment options</p>
-        <div className="pay-hub__list">
-          {others.map((method, i) => (
-            <motion.button
-              key={method.id}
-              type="button"
-              className={`pay-hub__row pay-hub__row--${method.id}`}
-              style={{ ["--pay-accent" as string]: method.accent }}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.08 * i }}
-              onClick={() => openPaymentWindow(method.url, `${method.name} — Automexa`)}
-            >
-              <span className="pay-hub__row-left">
-                <span className="pay-hub__name">{method.name}</span>
-                <span className="pay-hub__blurb">{method.blurb}</span>
-              </span>
-              <span className="pay-hub__go">
-                Pay
-                <ExternalLink size={14} />
-              </span>
-            </motion.button>
-          ))}
-        </div>
 
         <p className="pay-hub__foot">
           <Lock size={14} />
           <ShieldCheck size={14} />
-          Official provider windows · Encrypted checkout
+          Encrypted Stripe Checkout · No card details touch our site
         </p>
       </div>
     </div>
