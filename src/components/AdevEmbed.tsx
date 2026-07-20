@@ -26,6 +26,7 @@ export default function AdevEmbed() {
     script.dataset.clientId = "automexa";
     script.dataset.title = "ADEV";
     script.dataset.siteName = "AutoMexa";
+    script.dataset.publicRole = "Online manager";
     script.dataset.accent = "#c9a66b";
     script.dataset.whatsapp = WHATSAPP_DIGITS || "447999988450";
     // Keep widget light on public pages — no heavy FX bundles
