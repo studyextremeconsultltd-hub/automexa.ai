@@ -1,5 +1,3 @@
-import { MessageCircle } from "lucide-react";
-import { brand } from "../data/content";
 import { openPayHub } from "../data/payments";
 import "./PayHere.css";
 
@@ -22,16 +20,6 @@ export default function PayHere() {
           </button>
         </div>
       </section>
-
-      <a
-        href={brand.whatsapp}
-        className="whatsapp-fab"
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Chat on WhatsApp"
-      >
-        <MessageCircle size={26} />
-      </a>
     </>
   );
 }

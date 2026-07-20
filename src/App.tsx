@@ -4,7 +4,7 @@ import { QuoteProvider } from "./context/QuoteContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import QuoteModal from "./components/QuoteModal";
-import WhatsAppFab from "./components/WhatsAppFab";
+import AdevEmbed from "./components/AdevEmbed";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -31,7 +31,7 @@ function AppShell() {
         <>
           <Navbar />
           <QuoteModal />
-          <WhatsAppFab />
+          <AdevEmbed />
         </>
       )}
       <Routes>

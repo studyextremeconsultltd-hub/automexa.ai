@@ -35,6 +35,8 @@ jobs:
         env:
           # Live Stripe checkout API (Cloudflare Worker — same account pattern as Rose Empire)
           VITE_CHECKOUT_API_URL: https://automexa-checkout.adeelcolchester.workers.dev
+          # ADEV professional web-developer widget
+          VITE_ADEV_API_URL: https://adev-web-developer-plugin.adeelcolchester.workers.dev
         run: npm run build
 
       - name: Upload Pages artifact
