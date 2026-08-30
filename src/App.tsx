@@ -1,16 +1,17 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { QuoteProvider } from "./context/QuoteContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import QuoteModal from "./components/QuoteModal";
 import AdevEmbed from "./components/AdevEmbed";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Services from "./pages/Services";
-import Portfolio from "./pages/Portfolio";
-import Contact from "./pages/Contact";
-import PaymentHub from "./pages/PaymentHub";
+
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const Services = lazy(() => import("./pages/Services"));
+const Portfolio = lazy(() => import("./pages/Portfolio"));
+const Contact = lazy(() => import("./pages/Contact"));
+const PaymentHub = lazy(() => import("./pages/PaymentHub"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -34,14 +35,16 @@ function AppShell() {
           <AdevEmbed />
         </>
       )}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/pay" element={<PaymentHub />} />
-      </Routes>
+      <Suspense fallback={<div className="route-fallback" aria-hidden />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/pay" element={<PaymentHub />} />
+        </Routes>
+      </Suspense>
       {!isPayHub && <Footer />}
     </>
   );

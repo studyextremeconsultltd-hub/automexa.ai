@@ -1,9 +1,11 @@
-const hd = (id: string, w = 2400) =>
-  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=90&fm=jpg`;
+const hd = (id: string, w = 720) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=65&fm=jpg`;
 
-/** Pexels CDN motion clips (free license) — verified working renditions */
-const clip = (id: number, fps: 24 | 25 | 30 = 30) =>
-  `https://videos.pexels.com/video-files/${id}/${id}-hd_1920_1080_${fps}fps.mp4`;
+/** Pexels clips — 720p only so one stream does not stall first paint */
+const clip = (id: number, fps: 24 | 25 | 30 = 30, size: "720" | "1080" = "720") =>
+  size === "1080"
+    ? `https://videos.pexels.com/video-files/${id}/${id}-hd_1920_1080_${fps}fps.mp4`
+    : `https://videos.pexels.com/video-files/${id}/${id}-hd_1280_720_${fps}fps.mp4`;
 
 export const clips = {
   codeScreen: clip(3129671),
@@ -50,7 +52,7 @@ export const brand = {
 export const heroSlides = [
   {
     id: 1,
-    image: "/images/hero-ai-automation.png",
+    image: "/images/hero-ai-automation.webp",
     video: clips.codeScreen,
     title: "AI Automation That Works While You Sleep",
     subtitle:
@@ -58,7 +60,7 @@ export const heroSlides = [
   },
   {
     id: 2,
-    image: "/images/hero-crm-saas.png",
+    image: "/images/hero-crm-saas.webp",
     video: clips.digitalRain,
     title: "Custom CRM & SaaS Platforms",
     subtitle:
@@ -66,7 +68,7 @@ export const heroSlides = [
   },
   {
     id: 3,
-    image: "/images/hero-web-design.png",
+    image: "/images/hero-web-design.webp",
     video: clips.codeEditor,
     title: "High-Performance Websites in 3 Days",
     subtitle:
@@ -74,41 +76,34 @@ export const heroSlides = [
   },
 ];
 
-/** Looping motion clips for the hero mosaic tiles (Luma-style live imagery) */
-export const heroTileVideos: Record<number, string> = {
-  0: clips.hologramData,
-  2: clips.aiTech,
-  3: clips.keyboard,
-  5: clips.matrixCode,
-  7: clips.analytics,
-};
+/** Hero mosaic uses stills only — extra HD videos on first paint were stalling LCP */
 
 /** Live clips for the cinematic motion gallery columns */
 export const motionClips = [
-  { video: clips.fintech, poster: "/images/hero-crm-saas.png" },
-  { video: clips.laptopDesk, poster: hd("photo-1561070791-2526d30994b5", 1200) },
-  { video: clips.matrixCode, poster: "/images/hero-ai-automation.png" },
-  { video: clips.analytics, poster: hd("photo-1551288049-bebda4e38f71", 1200) },
-  { video: clips.digitalGrid, poster: "/images/hero-web-design.png" },
-  { video: clips.productDesign, poster: hd("photo-1472851294608-062f824d29cc", 1200) },
-  { video: clips.techAbstract, poster: hd("photo-1677442136019-21780ecad995", 1200) },
-  { video: clips.serverRoom, poster: hd("photo-1531482615713-2afd69097998", 1200) },
-  { video: clips.keyboard, poster: hd("photo-1451187580459-43490279c0fa", 1200) },
-  { video: clips.hologramData, poster: hd("photo-1518186285589-2f7649de83e0", 1200) },
+  { video: clips.fintech, poster: "/images/hero-crm-saas.webp" },
+  { video: clips.laptopDesk, poster: hd("photo-1561070791-2526d30994b5", 640) },
+  { video: clips.matrixCode, poster: "/images/hero-ai-automation.webp" },
+  { video: clips.analytics, poster: hd("photo-1551288049-bebda4e38f71", 640) },
+  { video: clips.digitalGrid, poster: "/images/hero-web-design.webp" },
+  { video: clips.productDesign, poster: hd("photo-1472851294608-062f824d29cc", 640) },
+  { video: clips.techAbstract, poster: hd("photo-1677442136019-21780ecad995", 640) },
+  { video: clips.serverRoom, poster: hd("photo-1531482615713-2afd69097998", 640) },
+  { video: clips.keyboard, poster: hd("photo-1451187580459-43490279c0fa", 640) },
+  { video: clips.hologramData, poster: hd("photo-1518186285589-2f7649de83e0", 640) },
 ];
 
 /** Shared HD mosaic / motion imagery — custom Automexa renders + tech assets */
 export const mosaicPool = [
-  "/images/hero-ai-automation.png",
-  hd("photo-1561070791-2526d30994b5", 1200),
-  "/images/hero-crm-saas.png",
-  hd("photo-1551288049-bebda4e38f71", 1200),
-  "/images/hero-web-design.png",
-  hd("photo-1472851294608-062f824d29cc", 1200),
-  hd("photo-1677442136019-21780ecad995", 1200),
-  hd("photo-1531482615713-2afd69097998", 1200),
-  hd("photo-1451187580459-43490279c0fa", 1200),
-  hd("photo-1518186285589-2f7649de83e0", 1200),
+  "/images/hero-ai-automation.webp",
+  hd("photo-1561070791-2526d30994b5", 640),
+  "/images/hero-crm-saas.webp",
+  hd("photo-1551288049-bebda4e38f71", 640),
+  "/images/hero-web-design.webp",
+  hd("photo-1472851294608-062f824d29cc", 640),
+  hd("photo-1677442136019-21780ecad995", 640),
+  hd("photo-1531482615713-2afd69097998", 640),
+  hd("photo-1451187580459-43490279c0fa", 640),
+  hd("photo-1518186285589-2f7649de83e0", 640),
 ];
 
 export const websiteTypes = [
@@ -228,9 +223,9 @@ export const projects = [
     completionTime: "3 Days",
     url: "https://www.roseempire.co.uk/",
     screenshot:
-      "https://image.thum.io/get/width/1400/crop/2200/noanimate/https://www.roseempire.co.uk/",
+      "https://image.thum.io/get/width/800/crop/1400/noanimate/https://www.roseempire.co.uk/",
     screenshotFallback:
-      "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fwww.roseempire.co.uk%2F?w=1600&h=2400",
+      "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fwww.roseempire.co.uk%2F?w=800&h=1400",
     description:
       "A bold wholesale platform that turns browsers into trade buyers — manufacturer-direct pricing, crystal-clear product paths, and an enquiry flow built to close deals across the UK.",
   },
@@ -243,11 +238,25 @@ export const projects = [
     completionTime: "3 Days",
     url: "https://msbt.co.uk/",
     screenshot:
-      "https://image.thum.io/get/width/1400/crop/2200/noanimate/https://msbt.co.uk/",
+      "https://image.thum.io/get/width/800/crop/1400/noanimate/https://msbt.co.uk/",
     screenshotFallback:
-      "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fmsbt.co.uk%2F?w=1600&h=2400",
+      "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fmsbt.co.uk%2F?w=800&h=1400",
     description:
       "A sharp education brand site that builds trust instantly — clear course pathways, modern visuals, and a digital presence that makes students and partners want to enrol.",
+  },
+  {
+    id: "unilink",
+    name: "UniLink Recruitment",
+    industry: "Student Recruitment",
+    country: "United Kingdom",
+    technology: "Conversion Website",
+    completionTime: "3 Days",
+    url: "https://unilinkrecruitment.co.uk/",
+    screenshot: "/images/portfolio/unilink-landing.webp",
+    screenshotFallback:
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=720&q=65&fm=jpg",
+    description:
+      "A high-trust recruitment platform for fully funded UK degree pathways — clear programmes, fast apply flows, and advisor-led conversion built to fill intakes nationwide.",
   },
 ];
 
@@ -332,49 +341,49 @@ export const deliverBlocks = [
     title: "Website Design",
     text: "Conversion-led websites for SMEs — clear structure, premium polish, and mobile-first layouts that win trust fast.",
     tone: "navy",
-    image: hd("photo-1561070791-2526d30994b5", 1400),
+    image: hd("photo-1561070791-2526d30994b5", 720),
     video: clips.workspace,
   },
   {
     title: "AI Automation",
     text: "Chatbots, AI agents, and smart workflows that automate enquiries, follow-ups, and routines 24/7.",
     tone: "blue",
-    image: hd("photo-1451187580459-43490279c0fa", 1400),
+    image: hd("photo-1451187580459-43490279c0fa", 720),
     video: clips.nightCoding,
   },
   {
     title: "AI Integrations",
     text: "OpenAI, WhatsApp, Stripe, Zapier, and your tools — connected into one automated pipeline.",
     tone: "sky",
-    image: hd("photo-1518186285589-2f7649de83e0", 1400),
+    image: hd("photo-1518186285589-2f7649de83e0", 720),
     video: clips.devFlow,
   },
   {
     title: "E-commerce",
     text: "Online stores built to sell — product clarity, smooth checkout, and a path from browse to buy.",
     tone: "sky",
-    image: hd("photo-1472851294608-062f824d29cc", 1400),
+    image: hd("photo-1472851294608-062f824d29cc", 720),
     video: clips.onlineStore,
   },
   {
     title: "CRM Systems",
     text: "Capture leads, track conversations, and keep every client relationship organised in one place.",
     tone: "navy",
-    image: hd("photo-1551288049-bebda4e38f71", 1400),
+    image: hd("photo-1551288049-bebda4e38f71", 720),
     video: clips.dashboards,
   },
   {
     title: "Business Solutions",
     text: "Custom digital tools for small and medium enterprises — booking, dashboards, and workflow systems.",
     tone: "blue",
-    image: hd("photo-1454165804606-c3d57bc86b40", 1400),
+    image: hd("photo-1454165804606-c3d57bc86b40", 720),
     video: clips.teamMeeting,
   },
   {
     title: "Within 3 Days",
     text: "Fast launch for growing businesses — professional quality without the long agency wait.",
     tone: "sky",
-    image: hd("photo-1517694712202-14dd9538aa97", 1400),
+    image: hd("photo-1517694712202-14dd9538aa97", 720),
     video: clips.teamOffice,
   },
 ];
@@ -383,37 +392,37 @@ export const services = [
   {
     title: "AI Automation & Chatbots",
     text: "Intelligent chatbots, autonomous AI agents, and smart workflows that answer enquiries, qualify leads, and follow up 24/7 — so your business never sleeps.",
-    image: hd("photo-1677442136019-21780ecad995", 1600),
+    image: hd("photo-1677442136019-21780ecad995", 720),
     video: clips.nightCoding,
   },
   {
     title: "AI Integrations & Workflows",
     text: "We connect OpenAI, WhatsApp, Stripe, Zapier, n8n and your existing tools into one automated pipeline — no more copy-paste admin between systems.",
-    image: hd("photo-1518186285589-2f7649de83e0", 1600),
+    image: hd("photo-1518186285589-2f7649de83e0", 720),
     video: clips.devFlow,
   },
   {
     title: "Professional Website Design",
     text: "Pixel-perfect, conversion-led websites that look premium on every device, load in a blink, and ship with security headers and SEO built in.",
-    image: hd("photo-1467232004584-a241de8bcf5d", 1600),
+    image: hd("photo-1467232004584-a241de8bcf5d", 720),
     video: clips.workspace,
   },
   {
     title: "CRM & SaaS Platforms",
     text: "Custom CRM, booking and quoting systems with dashboards and reporting — capture leads, manage clients, and keep your pipeline organised in one place.",
-    image: hd("photo-1552664730-d307ca884978", 1600),
+    image: hd("photo-1552664730-d307ca884978", 720),
     video: clips.dashboards,
   },
   {
     title: "E-commerce Solutions",
     text: "Stores built to sell — product clarity, secure Stripe checkout, inventory-ready architecture, and automated order follow-ups.",
-    image: hd("photo-1556742049-0cfed4f6a45d", 1600),
+    image: hd("photo-1556742049-0cfed4f6a45d", 720),
     video: clips.onlineStore,
   },
   {
     title: "Business Solutions & Support",
     text: "From booking platforms to internal dashboards — tailored, security-hardened tools that fit how your company works, with ongoing support after launch.",
-    image: hd("photo-1504384308090-c894fdcc538d", 1600),
+    image: hd("photo-1504384308090-c894fdcc538d", 720),
     video: clips.teamMeeting,
   },
 ];
@@ -421,36 +430,36 @@ export const services = [
 /** Page-specific Visual Showcase galleries — live motion clips with poster fallbacks */
 export const pageGalleries = {
   about: [
-    { src: hd("photo-1600880292203-757bb62b4baf", 1600), video: clips.teamMeeting, label: "Collaborative teams" },
-    { src: hd("photo-1497366216548-37526070297c", 1600), video: clips.workspace, label: "Modern workspace" },
-    { src: hd("photo-1531482615713-2afd69097998", 1600), video: clips.typingLaptop, label: "Strategy sessions" },
-    { src: hd("photo-1552664730-d307ca884978", 1600), video: clips.laptopWork, label: "Client workshops" },
-    { src: hd("photo-1522071820081-009f0129c71c", 1600), video: clips.laptopDesk, label: "Creative culture" },
-    { src: hd("photo-1517245386807-bb43f82c33c4", 1600), video: clips.analytics, label: "Delivery focus" },
+    { src: hd("photo-1600880292203-757bb62b4baf", 720), video: clips.teamMeeting, label: "Collaborative teams" },
+    { src: hd("photo-1497366216548-37526070297c", 720), video: clips.workspace, label: "Modern workspace" },
+    { src: hd("photo-1531482615713-2afd69097998", 720), video: clips.typingLaptop, label: "Strategy sessions" },
+    { src: hd("photo-1552664730-d307ca884978", 720), video: clips.laptopWork, label: "Client workshops" },
+    { src: hd("photo-1522071820081-009f0129c71c", 720), video: clips.laptopDesk, label: "Creative culture" },
+    { src: hd("photo-1517245386807-bb43f82c33c4", 720), video: clips.analytics, label: "Delivery focus" },
   ],
   services: [
-    { src: hd("photo-1467232004584-a241de8bcf5d", 1600), video: clips.nightCoding, label: "Website craft" },
-    { src: hd("photo-1451187580459-43490279c0fa", 1600), video: clips.devFlow, label: "AI systems" },
-    { src: hd("photo-1472851294608-062f824d29cc", 1600), video: clips.onlineStore, label: "Commerce flows" },
-    { src: hd("photo-1551288049-bebda4e38f71", 1600), video: clips.dashboards, label: "CRM dashboards" },
-    { src: hd("photo-1504384308090-c894fdcc538d", 1600), video: clips.matrixCode, label: "Business tooling" },
-    { src: hd("photo-1517694712202-14dd9538aa97", 1600), video: clips.teamOffice, label: "Fast builds" },
+    { src: hd("photo-1467232004584-a241de8bcf5d", 720), video: clips.nightCoding, label: "Website craft" },
+    { src: hd("photo-1451187580459-43490279c0fa", 720), video: clips.devFlow, label: "AI systems" },
+    { src: hd("photo-1472851294608-062f824d29cc", 720), video: clips.onlineStore, label: "Commerce flows" },
+    { src: hd("photo-1551288049-bebda4e38f71", 720), video: clips.dashboards, label: "CRM dashboards" },
+    { src: hd("photo-1504384308090-c894fdcc538d", 720), video: clips.matrixCode, label: "Business tooling" },
+    { src: hd("photo-1517694712202-14dd9538aa97", 720), video: clips.teamOffice, label: "Fast builds" },
   ],
   portfolio: [
-    { src: hd("photo-1460925895917-afdab827c52f", 1600), video: clips.fintech, label: "Growth metrics" },
-    { src: hd("photo-1561070791-2526d30994b5", 1600), video: clips.keyboard, label: "UI systems" },
-    { src: hd("photo-1498050108023-c5249f4df085", 1600), video: clips.codeScreen, label: "Product builds" },
-    { src: hd("photo-1558655146-d09347e92766", 1600), video: clips.digitalGrid, label: "Brand polish" },
-    { src: hd("photo-1581291518633-83b4ebd1d83c", 1600), video: clips.productDesign, label: "Interface detail" },
-    { src: hd("photo-1454165804606-c3d57bc86b40", 1600), video: clips.techAbstract, label: "Launch readiness" },
+    { src: hd("photo-1460925895917-afdab827c52f", 720), video: clips.fintech, label: "Growth metrics" },
+    { src: hd("photo-1561070791-2526d30994b5", 720), video: clips.keyboard, label: "UI systems" },
+    { src: hd("photo-1498050108023-c5249f4df085", 720), video: clips.codeScreen, label: "Product builds" },
+    { src: hd("photo-1558655146-d09347e92766", 720), video: clips.digitalGrid, label: "Brand polish" },
+    { src: hd("photo-1581291518633-83b4ebd1d83c", 720), video: clips.productDesign, label: "Interface detail" },
+    { src: hd("photo-1454165804606-c3d57bc86b40", 720), video: clips.techAbstract, label: "Launch readiness" },
   ],
   contact: [
-    { src: hd("photo-1423666639041-f56000c27a9a", 1600), video: clips.typingLaptop, label: "Open conversation" },
-    { src: hd("photo-1521791136064-7986c2920216", 1600), video: clips.teamMeeting, label: "Partnership" },
-    { src: hd("photo-1596524430615-b46475ddff6e", 1600), video: clips.laptopWork, label: "Clear support" },
-    { src: hd("photo-1516321318423-f06f85e504b3", 1600), video: clips.workspace, label: "Digital briefing" },
-    { src: hd("photo-1556761175-b413da4baf72", 1600), video: clips.cityTech, label: "Team alignment" },
-    { src: hd("photo-1573164713714-d95e436ab8d6", 1600), video: clips.serverRoom, label: "Ready to start" },
+    { src: hd("photo-1423666639041-f56000c27a9a", 720), video: clips.typingLaptop, label: "Open conversation" },
+    { src: hd("photo-1521791136064-7986c2920216", 720), video: clips.teamMeeting, label: "Partnership" },
+    { src: hd("photo-1596524430615-b46475ddff6e", 720), video: clips.laptopWork, label: "Clear support" },
+    { src: hd("photo-1516321318423-f06f85e504b3", 720), video: clips.workspace, label: "Digital briefing" },
+    { src: hd("photo-1556761175-b413da4baf72", 720), video: clips.cityTech, label: "Team alignment" },
+    { src: hd("photo-1573164713714-d95e436ab8d6", 720), video: clips.serverRoom, label: "Ready to start" },
   ],
 };
 

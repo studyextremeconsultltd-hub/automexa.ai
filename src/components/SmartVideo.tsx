@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
+import { useLiteMedia } from "../hooks/useLiteMedia";
 
 type Props = {
   src: string;
@@ -12,27 +13,39 @@ const prefersReducedMotion =
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /**
- * Lazy, resilient looping video: only mounts the <video> once it approaches
- * the viewport, falls back to the poster image if the stream fails or the
- * visitor prefers reduced motion.
+ * Lazy looping video: poster first, <video> only near viewport,
+ * paused when off-screen so bandwidth/CPU stay low.
  */
 export default function SmartVideo({ src, poster, className = "" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "300px 0px", once: true });
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const inView = useInView(ref, { margin: "60px 0px", once: false, amount: 0.15 });
   const [failed, setFailed] = useState(false);
-  const showVideo = inView && !failed && !prefersReducedMotion;
+  const lite = useLiteMedia();
+  const showVideo = inView && !failed && !prefersReducedMotion && !lite;
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    if (inView) {
+      el.play().catch(() => {});
+    } else {
+      el.pause();
+    }
+  }, [inView]);
 
   return (
     <div ref={ref} className={`smart-video ${className}`.trim()}>
       {showVideo ? (
         <video
+          ref={videoRef}
           src={src}
           poster={poster}
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           aria-hidden
           onError={() => setFailed(true)}
         />

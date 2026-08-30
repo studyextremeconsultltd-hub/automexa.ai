@@ -19,7 +19,6 @@ import "./Home.css";
 
 export default function Home() {
   const { openQuote } = useQuote();
-  const deliverLoop = [...deliverBlocks, ...deliverBlocks];
 
   return (
     <main>
@@ -44,12 +43,22 @@ export default function Home() {
 
         <div className="deliver-rail" aria-label="What we deliver">
           <div className="deliver-rail__track">
-            {deliverLoop.map((block, i) => (
+            {[...deliverBlocks, ...deliverBlocks].map((block, i) => (
               <article
                 key={`${block.title}-${i}`}
                 className={`deliver-slide deliver-slide--${block.tone}`}
               >
-                <SmartVideo src={block.video} poster={block.image} className="deliver-slide__bg" />
+                {i < deliverBlocks.length ? (
+                  <SmartVideo src={block.video} poster={block.image} className="deliver-slide__bg" />
+                ) : (
+                  <img
+                    src={block.image}
+                    alt=""
+                    className="deliver-slide__bg"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
                 <div className="deliver-slide__veil" />
                 <div className="deliver-slide__body">
                   <h3>{block.title}</h3>

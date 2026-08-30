@@ -15,8 +15,8 @@ import "./PaymentHub.css";
 
 const bgPool = [
   ...mosaicPool,
-  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2400&q=90&fm=jpg",
-  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2400&q=90&fm=jpg",
+  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=720&q=65&fm=jpg",
+  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=720&q=65&fm=jpg",
 ];
 
 export default function PaymentHub() {

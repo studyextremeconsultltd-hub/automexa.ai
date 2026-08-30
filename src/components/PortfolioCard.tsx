@@ -7,9 +7,10 @@ type Project = (typeof projects)[number];
 
 const stockFallbacks: Record<string, string> = {
   roseempire:
-    "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1400&q=90&fm=jpg",
+    "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=720&q=65&fm=jpg",
   msbt:
-    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1400&q=90&fm=jpg",
+    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=720&q=65&fm=jpg",
+  unilink: "/images/portfolio/unilink-landing.webp",
 };
 
 /** Compact horizontal featured card — full-page preview + rotate */
@@ -40,7 +41,13 @@ export function FeaturedWorkCard({
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
     >
-      <div className="featured-card__orbit">
+      <a
+        className="featured-card__orbit"
+        href={project.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Open ${project.name} live website`}
+      >
         <div className="featured-card__device">
           <div className="featured-card__chrome">
             <span />
@@ -54,12 +61,13 @@ export function FeaturedWorkCard({
               alt={`${project.name} full website`}
               loading="lazy"
               decoding="async"
+              fetchPriority="low"
               referrerPolicy="no-referrer"
               onError={handleError}
             />
           </div>
         </div>
-      </div>
+      </a>
       <div className="featured-card__meta">
         <h3>{project.name}</h3>
         <p>
@@ -159,6 +167,14 @@ export default function PortfolioCard({
         {!compact && (
           <>
             <p className="portfolio-card__desc">{project.description}</p>
+            <a
+              href={project.url}
+              className="btn btn-primary btn-live"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit live website
+            </a>
           </>
         )}
       </div>

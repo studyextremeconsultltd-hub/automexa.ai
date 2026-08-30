@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { heroSlides, heroTileVideos, mosaicPool } from "../data/content";
+import { heroSlides, mosaicPool } from "../data/content";
+import { useLiteMedia } from "../hooks/useLiteMedia";
 import SafeImage from "./SafeImage";
 import "./HeroSlider.css";
 
@@ -18,29 +19,28 @@ const tileShapes = [
   "square",
 ] as const;
 
+const prefersReducedMotion =
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export default function HeroSlider() {
+  const lite = useLiteMedia();
   const [index, setIndex] = useState(0);
-  const [mosaicTick, setMosaicTick] = useState(0);
+  const [playVideo, setPlayVideo] = useState(false);
 
   useEffect(() => {
     const id = window.setInterval(() => {
       setIndex((i) => (i + 1) % heroSlides.length);
-    }, 6000);
+    }, 8000);
     return () => window.clearInterval(id);
   }, []);
 
   useEffect(() => {
-    const id = window.setInterval(() => {
-      setMosaicTick((t) => t + 1);
-    }, 1800);
-    return () => window.clearInterval(id);
+    const id = window.setTimeout(() => setPlayVideo(true), 500);
+    return () => window.clearTimeout(id);
   }, []);
 
   const slide = heroSlides[index];
-
-  function tileSrc(i: number) {
-    return mosaicPool[(i + mosaicTick) % mosaicPool.length];
-  }
 
   return (
     <section className="hero">
@@ -49,13 +49,13 @@ export default function HeroSlider() {
           <motion.div
             key={slide.id}
             className="hero__bg"
-            initial={{ opacity: 0, scale: 1.08 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
             style={{ backgroundImage: `url(${slide.image})` }}
           >
-            {slide.video && (
+            {slide.video && playVideo && !lite && !prefersReducedMotion && (
               <video
                 className="hero__bg-video"
                 src={slide.video}
@@ -64,7 +64,7 @@ export default function HeroSlider() {
                 muted
                 loop
                 playsInline
-                preload="auto"
+                preload={index === 0 ? "metadata" : "none"}
               />
             )}
           </motion.div>
@@ -72,44 +72,22 @@ export default function HeroSlider() {
         <div className="hero__veil" />
         <div className="hero__grain" />
 
-        <div className="hero__stage" aria-hidden>
-          {Array.from({ length: 10 }).map((_, i) =>
-            heroTileVideos[i] ? (
+        {!lite && (
+          <div className="hero__stage" aria-hidden>
+            {Array.from({ length: 10 }).map((_, i) => (
               <div
                 key={i}
                 className={`mosaic-tile mosaic-tile--${tileShapes[i]} mosaic-tile--${i + 1}`}
               >
-                <video
-                  className="mosaic-tile__media"
-                  src={heroTileVideos[i]}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
+                <SafeImage
+                  src={mosaicPool[i % mosaicPool.length]}
+                  alt=""
+                  loading={i === 0 ? "eager" : "lazy"}
                 />
               </div>
-            ) : (
-              <div
-                key={i}
-                className={`mosaic-tile mosaic-tile--${tileShapes[i]} mosaic-tile--${i + 1}`}
-              >
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={tileSrc(i)}
-                    className="mosaic-tile__media"
-                    initial={{ opacity: 0, scale: 1.1 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.65 }}
-                  >
-                    <SafeImage src={tileSrc(i)} alt="" loading="eager" />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            ),
-          )}
-        </div>
+            ))}
+          </div>
+        )}
 
         <div className="hero__caption">
           <div className="container hero__caption-inner">
@@ -119,7 +97,7 @@ export default function HeroSlider() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: 0.35 }}
               >
                 {slide.title}
               </motion.h1>

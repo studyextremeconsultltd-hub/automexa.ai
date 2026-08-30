@@ -4,13 +4,14 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { clips } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
+import SmartVideo from "./SmartVideo";
 import "./HighlightSlider.css";
 
 const slides = [
   {
     id: 1,
     image:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2400&q=90&fm=jpg",
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=720&q=65&fm=jpg",
     video: clips.typingLaptop,
     kicker: "AI Website Design",
     title: "From prompt to polished pages — AI accelerates every layout.",
@@ -18,7 +19,7 @@ const slides = [
   {
     id: 2,
     image:
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=2400&q=90&fm=jpg",
+      "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=720&q=65&fm=jpg",
     video: clips.cityTech,
     kicker: "Smart Automation",
     title: "Design systems that look premium and convert on every device.",
@@ -26,7 +27,7 @@ const slides = [
   {
     id: 3,
     image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2400&q=90&fm=jpg",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=720&q=65&fm=jpg",
     video: clips.laptopWork,
     kicker: "Growth Ready",
     title: "Launch faster with AI-assisted builds built for real businesses.",
@@ -34,7 +35,7 @@ const slides = [
   {
     id: 4,
     image:
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2400&q=90&fm=jpg",
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=720&q=65&fm=jpg",
     video: clips.dataCenter,
     kicker: "Contact Us",
     title: "Ready to start? Contact us and get your free quote today.",
@@ -67,15 +68,10 @@ export default function HighlightSlider() {
           transition={{ duration: 0.7 }}
           style={{ backgroundImage: `url(${slide.image})` }}
         >
-          <video
-            className="highlight-slider__video"
+          <SmartVideo
             src={slide.video}
             poster={slide.image}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
+            className="highlight-slider__video"
           />
         </motion.div>
       </AnimatePresence>

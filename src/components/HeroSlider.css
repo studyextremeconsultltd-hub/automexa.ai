@@ -196,6 +196,14 @@ video.mosaic-tile__media {
 }
 
 @media (max-width: 900px) {
+  .hero__grain {
+    display: none;
+  }
+
+  .hero__caption {
+    backdrop-filter: none;
+  }
+
   .hero__stage {
     inset: calc(var(--nav-h) + 0.75rem) 3% 9rem 3%;
     gap: 0.45rem;
@@ -203,6 +211,7 @@ video.mosaic-tile__media {
 
   .mosaic-tile {
     border-radius: 12px;
+    animation: none !important;
   }
 
   .hero__caption-inner {

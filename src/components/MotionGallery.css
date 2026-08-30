@@ -143,6 +143,11 @@
   }
 
   .motion-gallery__stage {
-    height: 420px;
+    height: 360px;
+    grid-template-columns: 1fr;
+  }
+
+  .motion-col__track {
+    will-change: auto;
   }
 }

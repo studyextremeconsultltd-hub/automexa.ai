@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { motionClips } from "../data/content";
+import { useLiteMedia } from "../hooks/useLiteMedia";
 import SmartVideo from "./SmartVideo";
 import "./MotionGallery.css";
 
@@ -9,10 +10,12 @@ function Column({
   items,
   direction,
   duration,
+  stillsOnly = false,
 }: {
   items: Clip[];
   direction: "up" | "down";
   duration: number;
+  stillsOnly?: boolean;
 }) {
   const doubled = [...items, ...items];
   return (
@@ -24,7 +27,11 @@ function Column({
             className="motion-card"
             whileHover={{ scale: 1.03 }}
           >
-            <SmartVideo src={item.video} poster={item.poster} />
+            {i < items.length && !stillsOnly ? (
+              <SmartVideo src={item.video} poster={item.poster} />
+            ) : (
+              <img src={item.poster} alt="" loading="lazy" decoding="async" />
+            )}
             <div className="motion-card__glow" />
           </motion.figure>
         ))}
@@ -34,8 +41,10 @@ function Column({
 }
 
 export default function MotionGallery() {
+  const lite = useLiteMedia();
   const left = motionClips.filter((_, i) => i % 2 === 0);
   const right = motionClips.filter((_, i) => i % 2 === 1);
+  const mobileLeft = left.slice(0, 3);
 
   return (
     <section className="motion-gallery">
@@ -55,8 +64,14 @@ export default function MotionGallery() {
           </div>
         </div>
         <div className="motion-gallery__stage" aria-hidden>
-          <Column items={left} direction="up" duration={28} />
-          <Column items={right} direction="down" duration={34} />
+          {lite ? (
+            <Column items={mobileLeft} direction="up" duration={28} stillsOnly />
+          ) : (
+            <>
+              <Column items={left} direction="up" duration={28} />
+              <Column items={right} direction="down" duration={34} />
+            </>
+          )}
         </div>
       </div>
     </section>
