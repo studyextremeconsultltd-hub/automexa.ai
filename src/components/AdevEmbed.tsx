@@ -39,17 +39,27 @@ export default function AdevEmbed() {
       document.body.appendChild(script);
     };
 
-    const idle =
-      "requestIdleCallback" in window
-        ? window.requestIdleCallback(inject, { timeout: idleTimeout })
-        : window.setTimeout(inject, fallbackMs);
+    let idleId: number | undefined;
+    let timeoutId: number | undefined;
+    const win = window as Window &
+      typeof globalThis & {
+        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+        cancelIdleCallback?: (id: number) => void;
+      };
+
+    if (typeof win.requestIdleCallback === "function") {
+      idleId = win.requestIdleCallback(inject, { timeout: idleTimeout });
+    } else {
+      timeoutId = window.setTimeout(inject, fallbackMs);
+    }
 
     return () => {
       cancelled = true;
-      if ("cancelIdleCallback" in window) {
-        window.cancelIdleCallback(idle as number);
-      } else {
-        window.clearTimeout(idle as number);
+      if (idleId != null && typeof win.cancelIdleCallback === "function") {
+        win.cancelIdleCallback(idleId);
+      }
+      if (timeoutId != null) {
+        window.clearTimeout(timeoutId);
       }
       document.querySelector('script[data-adev-embed="automexa"]')?.remove();
       document.getElementById("adev-widget")?.remove();
