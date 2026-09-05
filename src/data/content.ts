@@ -76,7 +76,7 @@ export const heroSlides = [
   },
 ];
 
-/** Hero mosaic uses stills only — extra HD videos on first paint were stalling LCP */
+/** Hero mosaic tiles reuse these clips so the board stays in motion */
 
 /** Live clips for the cinematic motion gallery columns */
 export const motionClips = [

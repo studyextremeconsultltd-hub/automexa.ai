@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { heroSlides, mosaicPool } from "../data/content";
-import { useLiteMedia } from "../hooks/useLiteMedia";
-import SafeImage from "./SafeImage";
+import { heroSlides, motionClips } from "../data/content";
+import SmartVideo from "./SmartVideo";
 import "./HeroSlider.css";
 
 const tileShapes = [
@@ -19,12 +18,7 @@ const tileShapes = [
   "square",
 ] as const;
 
-const prefersReducedMotion =
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 export default function HeroSlider() {
-  const lite = useLiteMedia();
   const [index, setIndex] = useState(0);
   const [playVideo, setPlayVideo] = useState(false);
 
@@ -55,7 +49,7 @@ export default function HeroSlider() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             style={{ backgroundImage: `url(${slide.image})` }}
           >
-            {slide.video && playVideo && !lite && !prefersReducedMotion && (
+            {slide.video && playVideo && (
               <video
                 className="hero__bg-video"
                 src={slide.video}
@@ -65,6 +59,10 @@ export default function HeroSlider() {
                 loop
                 playsInline
                 preload={index === 0 ? "metadata" : "none"}
+                onCanPlay={(e) => {
+                  e.currentTarget.muted = true;
+                  void e.currentTarget.play().catch(() => {});
+                }}
               />
             )}
           </motion.div>
@@ -72,22 +70,23 @@ export default function HeroSlider() {
         <div className="hero__veil" />
         <div className="hero__grain" />
 
-        {!lite && (
-          <div className="hero__stage" aria-hidden>
-            {Array.from({ length: 10 }).map((_, i) => (
+        <div className="hero__stage" aria-hidden>
+          {Array.from({ length: 10 }).map((_, i) => {
+            const clip = motionClips[i % motionClips.length];
+            return (
               <div
                 key={i}
                 className={`mosaic-tile mosaic-tile--${tileShapes[i]} mosaic-tile--${i + 1}`}
               >
-                <SafeImage
-                  src={mosaicPool[i % mosaicPool.length]}
-                  alt=""
-                  loading={i === 0 ? "eager" : "lazy"}
+                <SmartVideo
+                  src={clip.video}
+                  poster={clip.poster}
+                  className="mosaic-tile__media"
                 />
               </div>
-            ))}
-          </div>
-        )}
+            );
+          })}
+        </div>
 
         <div className="hero__caption">
           <div className="container hero__caption-inner">

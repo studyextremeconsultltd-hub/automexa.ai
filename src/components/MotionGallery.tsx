@@ -27,11 +27,7 @@ function Column({
             className="motion-card"
             whileHover={{ scale: 1.03 }}
           >
-            {i < items.length && !stillsOnly ? (
-              <SmartVideo src={item.video} poster={item.poster} />
-            ) : (
-              <img src={item.poster} alt="" loading="lazy" decoding="async" />
-            )}
+            <SmartVideo src={item.video} poster={item.poster} />
             <div className="motion-card__glow" />
           </motion.figure>
         ))}
@@ -65,7 +61,7 @@ export default function MotionGallery() {
         </div>
         <div className="motion-gallery__stage" aria-hidden>
           {lite ? (
-            <Column items={mobileLeft} direction="up" duration={28} stillsOnly />
+            <Column items={mobileLeft} direction="up" duration={28} />
           ) : (
             <>
               <Column items={left} direction="up" duration={28} />

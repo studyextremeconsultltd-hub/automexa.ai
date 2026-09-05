@@ -36,7 +36,7 @@ export default function PageGallery({
               viewport={{ once: true }}
               transition={{ delay: lite ? 0 : i * 0.06 }}
             >
-              {img.video && !lite ? (
+              {img.video ? (
                 <SmartVideo src={img.video} poster={img.src} />
               ) : (
                 <SafeImage src={img.src} alt={img.label} />

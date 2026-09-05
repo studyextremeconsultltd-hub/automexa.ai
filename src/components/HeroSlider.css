@@ -71,6 +71,7 @@
 }
 
 .mosaic-tile img,
+.mosaic-tile .smart-video,
 .mosaic-tile__media,
 .mosaic-tile__media img,
 video.mosaic-tile__media {
@@ -81,8 +82,11 @@ video.mosaic-tile__media {
   object-fit: cover;
 }
 
-.mosaic-tile__media {
+.mosaic-tile__media,
+.mosaic-tile .smart-video {
   display: block;
+  position: absolute;
+  inset: 0;
 }
 
 .mosaic-tile--1 { grid-column: 1 / 3; grid-row: 1 / 3; }
