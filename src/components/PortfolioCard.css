@@ -350,10 +350,12 @@
   box-shadow: 0 28px 60px rgba(201, 166, 107, 0.22);
 }
 
-.featured-card:hover .featured-card__device {
-  animation-play-state: paused;
-  transform: rotateY(0deg) rotateX(0deg) scale(1.02);
-  transition: transform 0.45s ease;
+@media (hover: hover) and (pointer: fine) {
+  .featured-card:hover .featured-card__device {
+    animation-play-state: paused;
+    transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+    transition: transform 0.45s ease;
+  }
 }
 
 @keyframes featured-rotate {

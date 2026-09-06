@@ -10,12 +10,10 @@ function Column({
   items,
   direction,
   duration,
-  stillsOnly = false,
 }: {
   items: Clip[];
   direction: "up" | "down";
   duration: number;
-  stillsOnly?: boolean;
 }) {
   const doubled = [...items, ...items];
   return (

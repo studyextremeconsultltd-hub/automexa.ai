@@ -468,5 +468,6 @@ export const navLinks = [
   { label: "About Us", path: "/about" },
   { label: "Our Services", path: "/services" },
   { label: "Portfolio", path: "/portfolio" },
+  { label: "Free Scorecard", path: "/scorecard" },
   { label: "Contact Us", path: "/contact" },
 ];

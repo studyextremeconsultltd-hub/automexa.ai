@@ -142,8 +142,10 @@
   animation: integrations-scroll 32s linear infinite;
 }
 
-.integrations-rail:hover .integrations-rail__track {
-  animation-play-state: paused;
+@media (hover: hover) and (pointer: fine) {
+  .integrations-rail:hover .integrations-rail__track {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes integrations-scroll {

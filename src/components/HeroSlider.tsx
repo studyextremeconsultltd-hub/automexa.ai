@@ -60,8 +60,12 @@ export default function HeroSlider() {
                 playsInline
                 preload={index === 0 ? "metadata" : "none"}
                 onCanPlay={(e) => {
-                  e.currentTarget.muted = true;
-                  void e.currentTarget.play().catch(() => {});
+                  const v = e.currentTarget;
+                  v.defaultMuted = true;
+                  v.muted = true;
+                  v.setAttribute("playsinline", "");
+                  v.setAttribute("webkit-playsinline", "");
+                  void v.play().catch(() => {});
                 }}
               />
             )}

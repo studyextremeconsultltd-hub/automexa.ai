@@ -10,7 +10,8 @@ const WHATSAPP_DIGITS =
   String(brand.whatsapp || "").replace(/\D/g, "") || "447999988450";
 
 /**
- * Loads ADEV after first paint so chat widget does not compete with images.
+ * Loads ADEV late and light.
+ * Never bind to pointerdown — that steals scorecard / form taps and pops the widget mid-click.
  */
 export default function AdevEmbed() {
   useEffect(() => {
@@ -19,14 +20,15 @@ export default function AdevEmbed() {
     let cancelled = false;
     const narrow =
       typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches;
-    const idleTimeout = narrow ? 8000 : 4000;
-    const fallbackMs = narrow ? 5000 : 2500;
+    const idleTimeout = narrow ? 18000 : 10000;
+    const fallbackMs = narrow ? 14000 : 9000;
 
     const inject = () => {
       if (cancelled || document.querySelector('script[data-adev-embed="automexa"]')) return;
       const script = document.createElement("script");
       script.src = `${ADEV_API.replace(/\/$/, "")}/widget.js`;
       script.async = true;
+      script.defer = true;
       script.dataset.adevEmbed = "automexa";
       script.dataset.apiBase = ADEV_API.replace(/\/$/, "");
       script.dataset.clientId = "automexa";
@@ -47,6 +49,15 @@ export default function AdevEmbed() {
         cancelIdleCallback?: (id: number) => void;
       };
 
+    // Scroll past fold is a safe signal; click/tap is not (forms + scorecard).
+    const onScroll = () => {
+      if (cancelled) return;
+      if (window.scrollY < 240) return;
+      inject();
+      window.removeEventListener("scroll", onScroll);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
     if (typeof win.requestIdleCallback === "function") {
       idleId = win.requestIdleCallback(inject, { timeout: idleTimeout });
     } else {
@@ -55,6 +66,7 @@ export default function AdevEmbed() {
 
     return () => {
       cancelled = true;
+      window.removeEventListener("scroll", onScroll);
       if (idleId != null && typeof win.cancelIdleCallback === "function") {
         win.cancelIdleCallback(idleId);
       }

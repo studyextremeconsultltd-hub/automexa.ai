@@ -148,6 +148,7 @@
   }
 
   .motion-col__track {
-    will-change: auto;
+    will-change: transform;
+    animation-duration: inherit;
   }
 }

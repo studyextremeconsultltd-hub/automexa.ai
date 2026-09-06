@@ -12,6 +12,7 @@ const Services = lazy(() => import("./pages/Services"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
 const Contact = lazy(() => import("./pages/Contact"));
 const PaymentHub = lazy(() => import("./pages/PaymentHub"));
+const Scorecard = lazy(() => import("./pages/Scorecard"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -42,6 +43,7 @@ function AppShell() {
           <Route path="/services" element={<Services />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/scorecard" element={<Scorecard />} />
           <Route path="/pay" element={<PaymentHub />} />
         </Routes>
       </Suspense>

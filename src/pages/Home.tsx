@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import ExpertiseShowcase from "../components/ExpertiseShowcase";
 import HeroSlider from "../components/HeroSlider";
 import HighlightSlider from "../components/HighlightSlider";
@@ -25,6 +26,21 @@ export default function Home() {
       <HeroSlider />
       <HighlightSlider />
       <MotionGallery />
+
+      <section className="section" style={{ paddingBlock: "2.5rem" }}>
+        <div className="container" style={{ textAlign: "center" }}>
+          <p className="section-label">Free · 2 minutes</p>
+          <h2 className="section-title" style={{ maxWidth: "18ch", marginInline: "auto" }}>
+            Score your website & Google Maps
+          </h2>
+          <p className="section-lead" style={{ marginInline: "auto" }}>
+            Get a score out of 100. Interested traders raise their hand — we help you close.
+          </p>
+          <Link to="/scorecard" className="btn btn-primary" style={{ marginTop: "1rem", display: "inline-flex" }}>
+            Take the free scorecard <ArrowRight size={16} />
+          </Link>
+        </div>
+      </section>
 
       <section className="section intro-section">
         <div className="container">

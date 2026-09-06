@@ -73,8 +73,11 @@
   padding: 0.5rem 1.25rem 1rem;
 }
 
-.deliver-rail:hover .deliver-rail__track {
-  animation-play-state: paused;
+/* Only pause on real mouse hover — sticky :hover on phones freezes billboards */
+@media (hover: hover) and (pointer: fine) {
+  .deliver-rail:hover .deliver-rail__track {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes deliver-slide {
