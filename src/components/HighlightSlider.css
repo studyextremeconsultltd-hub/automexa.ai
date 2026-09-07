@@ -31,6 +31,7 @@
 .highlight-slider__veil {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background: linear-gradient(
     180deg,
     rgba(4, 12, 28, 0.55) 0%,

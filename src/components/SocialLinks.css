@@ -2,6 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
+  position: relative;
+  z-index: 2;
 }
 
 .social-links__item {
@@ -10,6 +12,10 @@
   justify-content: center;
   gap: 0.45rem;
   color: #fff;
+  position: relative;
+  z-index: 2;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
   transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
 }
 

@@ -10,18 +10,20 @@ const WHATSAPP_DIGITS =
   String(brand.whatsapp || "").replace(/\D/g, "") || "447999988450";
 
 /**
- * Loads ADEV late and light.
- * Never bind to pointerdown — that steals scorecard / form taps and pops the widget mid-click.
+ * Desktop-only chat embed.
+ * On phones the widget mounts a full-viewport fixed layer (z-index max) that
+ * has blocked scroll / icon taps for customers — keep mobile order path clean.
  */
 export default function AdevEmbed() {
   useEffect(() => {
+    const narrow = window.matchMedia("(max-width: 900px)").matches;
+    if (narrow) return;
+
     if (document.querySelector('script[data-adev-embed="automexa"]')) return;
 
     let cancelled = false;
-    const narrow =
-      typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches;
-    const idleTimeout = narrow ? 18000 : 10000;
-    const fallbackMs = narrow ? 14000 : 9000;
+    const idleTimeout = 10000;
+    const fallbackMs = 9000;
 
     const inject = () => {
       if (cancelled || document.querySelector('script[data-adev-embed="automexa"]')) return;
@@ -49,15 +51,6 @@ export default function AdevEmbed() {
         cancelIdleCallback?: (id: number) => void;
       };
 
-    // Scroll past fold is a safe signal; click/tap is not (forms + scorecard).
-    const onScroll = () => {
-      if (cancelled) return;
-      if (window.scrollY < 240) return;
-      inject();
-      window.removeEventListener("scroll", onScroll);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-
     if (typeof win.requestIdleCallback === "function") {
       idleId = win.requestIdleCallback(inject, { timeout: idleTimeout });
     } else {
@@ -66,7 +59,6 @@ export default function AdevEmbed() {
 
     return () => {
       cancelled = true;
-      window.removeEventListener("scroll", onScroll);
       if (idleId != null && typeof win.cancelIdleCallback === "function") {
         win.cancelIdleCallback(idleId);
       }

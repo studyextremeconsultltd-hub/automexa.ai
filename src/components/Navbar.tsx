@@ -20,11 +20,22 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
+    const prev = document.body.style.overflow;
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
       document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = prev || "";
     };
   }, [open]);
+
+  // Hard reset — never leave the page locked if a menu/modal left overflow:hidden
+  useEffect(() => {
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+  }, []);
 
   function handlePayNow() {
     setOpen(false);
@@ -36,7 +47,11 @@ export default function Navbar() {
       <div className="container navbar__inner">
         <BrandLogo variant="light" onClick={() => setOpen(false)} />
 
-        <nav className={`navbar__links ${open ? "is-open" : ""}`}>
+        <nav
+          className={`navbar__links ${open ? "is-open" : ""}`}
+          aria-hidden={!open}
+          {...(!open ? { inert: true } : {})}
+        >
           {navLinks.map((link) => (
             <NavLink
               key={link.path}
