@@ -63,14 +63,12 @@ export default function HomeRest() {
 
         <div className="deliver-rail" aria-label="What we deliver">
           <div className="deliver-rail__track">
-            {[...deliverBlocks, ...deliverBlocks].map((block, i) => (
+            {(lite ? deliverBlocks : [...deliverBlocks, ...deliverBlocks]).map((block, i) => (
               <article
                 key={`${block.title}-${i}`}
                 className={`deliver-slide deliver-slide--${block.tone}`}
               >
-                {i < deliverBlocks.length && !lite ? (
-                  <SmartVideo src={block.video} poster={block.image} className="deliver-slide__bg" />
-                ) : (
+                {lite ? (
                   <img
                     src={block.image}
                     alt=""
@@ -79,6 +77,12 @@ export default function HomeRest() {
                     decoding="async"
                     width={720}
                     height={480}
+                  />
+                ) : (
+                  <SmartVideo
+                    src={block.video}
+                    poster={block.image}
+                    className="deliver-slide__bg"
                   />
                 )}
                 <div className="deliver-slide__veil" />

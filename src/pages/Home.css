@@ -80,6 +80,27 @@
   }
 }
 
+@media (max-width: 900px) {
+  .deliver-rail {
+    mask-image: none;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.25rem;
+  }
+
+  .deliver-rail__track {
+    animation: none !important;
+    width: max-content;
+    padding-inline: 1rem;
+  }
+
+  .deliver-slide {
+    scroll-snap-align: start;
+    width: min(300px, 82vw);
+  }
+}
+
 @keyframes deliver-slide {
   from {
     transform: translateX(0);

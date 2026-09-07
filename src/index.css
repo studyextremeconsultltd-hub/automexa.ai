@@ -63,6 +63,18 @@ html {
   contain-intrinsic-size: 1px 640px;
 }
 
+@media (max-width: 900px) {
+  /* content-visibility can blank sections while scrolling on phones */
+  .cv-auto {
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   font-family: var(--font-body);
   color: var(--text);

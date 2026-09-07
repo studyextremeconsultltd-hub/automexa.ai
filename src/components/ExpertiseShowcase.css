@@ -179,3 +179,14 @@
     justify-content: center;
   }
 }
+
+@media (max-width: 900px) {
+  .integrations-rail__track {
+    animation: none !important;
+    flex-wrap: wrap;
+    width: auto;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem 1.25rem;
+  }
+}

@@ -143,12 +143,21 @@
   }
 
   .motion-gallery__stage {
-    height: 360px;
+    height: auto;
+    min-height: 0;
     grid-template-columns: 1fr;
+    mask-image: none;
   }
 
   .motion-col__track {
-    will-change: transform;
-    animation-duration: inherit;
+    animation: none !important;
+    will-change: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+  }
+
+  .motion-card {
+    aspect-ratio: 3 / 4;
   }
 }

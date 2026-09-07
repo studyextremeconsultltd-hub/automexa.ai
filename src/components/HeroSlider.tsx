@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { heroSlides, mosaicPool } from "../data/content";
-import { useLiteMedia } from "../hooks/useLiteMedia";
+import { useIsMobile, useLiteMedia } from "../hooks/useLiteMedia";
 import SafeImage from "./SafeImage";
 import "./HeroSlider.css";
 
@@ -23,28 +23,34 @@ const prefersReducedMotion =
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export default function HeroSlider() {
+  const mobile = useIsMobile();
   const lite = useLiteMedia();
   const [index, setIndex] = useState(0);
   const [playVideo, setPlayVideo] = useState(false);
   const [readyToRotate, setReadyToRotate] = useState(false);
 
-  // Delay slide rotation so LCP stays stable (helps CLS + LCP)
+  const mosaicCount = mobile ? 4 : 6;
+  const mosaicSources = mobile
+    ? mosaicPool.filter((src) => src.startsWith("/"))
+    : mosaicPool;
+
   useEffect(() => {
-    const warm = window.setTimeout(() => setReadyToRotate(true), lite ? 12000 : 8000);
+    const warm = window.setTimeout(() => setReadyToRotate(true), mobile ? 10000 : 8000);
     return () => window.clearTimeout(warm);
-  }, [lite]);
+  }, [mobile]);
 
   useEffect(() => {
     if (!readyToRotate) return;
     const id = window.setInterval(() => {
       setIndex((i) => (i + 1) % heroSlides.length);
-    }, lite ? 10000 : 8000);
+    }, mobile ? 9000 : 8000);
     return () => window.clearInterval(id);
-  }, [readyToRotate, lite]);
+  }, [readyToRotate, mobile]);
 
   useEffect(() => {
-    if (lite) return;
-    const id = window.setTimeout(() => setPlayVideo(true), 2500);
+    // No autoplay video on phones — keeps scroll smooth and hero sharp
+    if (lite || prefersReducedMotion) return;
+    const id = window.setTimeout(() => setPlayVideo(true), 2800);
     return () => window.clearTimeout(id);
   }, [lite]);
 
@@ -76,34 +82,30 @@ export default function HeroSlider() {
               preload="none"
               onCanPlay={(e) => {
                 const v = e.currentTarget;
-                v.defaultMuted = true;
                 v.muted = true;
-                v.setAttribute("playsinline", "");
-                v.setAttribute("webkit-playsinline", "");
                 void v.play().catch(() => {});
               }}
             />
           )}
         </div>
         <div className="hero__veil" />
-        <div className="hero__grain" />
+        {!mobile && <div className="hero__grain" />}
 
-        {!lite && (
-          <div className="hero__stage" aria-hidden>
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className={`mosaic-tile mosaic-tile--${tileShapes[i]} mosaic-tile--${i + 1}`}
-              >
+        {/* Always show mosaic stills so mobile stays eye-catching */}
+        <div className="hero__stage" aria-hidden>
+          {Array.from({ length: mosaicCount }).map((_, i) => (
+            <div
+              key={i}
+              className={`mosaic-tile mosaic-tile--${tileShapes[i]} mosaic-tile--${i + 1}`}
+            >
                 <SafeImage
-                  src={mosaicPool[i % mosaicPool.length]}
+                  src={mosaicSources[i % mosaicSources.length]}
                   alt=""
-                  loading="lazy"
+                  loading={i === 0 ? "eager" : "lazy"}
                 />
-              </div>
-            ))}
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
 
         <div className="hero__caption">
           <div className="container hero__caption-inner">

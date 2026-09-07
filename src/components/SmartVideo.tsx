@@ -7,10 +7,6 @@ type Props = {
   className?: string;
 };
 
-function isNarrow() {
-  return typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches;
-}
-
 function useNearViewport(ref: RefObject<HTMLElement | null>) {
   const [inView, setInView] = useState(false);
 
@@ -22,7 +18,7 @@ function useNearViewport(ref: RefObject<HTMLElement | null>) {
     }
     const io = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { rootMargin: "80px 0px", threshold: 0.12 },
+      { rootMargin: "60px 0px", threshold: 0.1 },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -32,8 +28,8 @@ function useNearViewport(ref: RefObject<HTMLElement | null>) {
 }
 
 /**
- * Poster-first video: on phones / Save-Data we keep stills only for PageSpeed.
- * Desktop retries play for Safari/CDN reliability.
+ * Poster-first. On mobile / Save-Data: still image only (no video decode = no scroll hang).
+ * Desktop: play when near viewport, pause when off-screen.
  */
 export default function SmartVideo({ src, poster, className = "" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
@@ -41,7 +37,7 @@ export default function SmartVideo({ src, poster, className = "" }: Props) {
   const inView = useNearViewport(ref);
   const [failed, setFailed] = useState(false);
   const lite = useLiteMedia();
-  const showVideo = inView && !failed && !lite;
+  const showVideo = !lite && inView && !failed;
 
   useEffect(() => {
     setFailed(false);
@@ -49,56 +45,23 @@ export default function SmartVideo({ src, poster, className = "" }: Props) {
 
   useEffect(() => {
     const el = videoRef.current;
-    if (!el || failed || lite) return;
-
-    const play = () => {
-      try {
-        el.defaultMuted = true;
-        el.muted = true;
-        el.playsInline = true;
-        el.setAttribute("playsinline", "");
-        el.setAttribute("webkit-playsinline", "");
-        el.setAttribute("muted", "");
-      } catch {
-        /* ignore */
-      }
-      void el.play().catch(() => {});
-    };
+    if (!el || lite || failed) return;
 
     if (!inView) {
-      if (!isNarrow()) el.pause();
+      el.pause();
       return;
     }
 
+    const play = () => {
+      el.defaultMuted = true;
+      el.muted = true;
+      el.playsInline = true;
+      void el.play().catch(() => {});
+    };
+
     play();
-    el.addEventListener("canplay", play);
-    el.addEventListener("loadeddata", play);
-    el.addEventListener("loadedmetadata", play);
-
-    const onVis = () => {
-      if (document.visibilityState === "visible" && inView) play();
-    };
-    document.addEventListener("visibilitychange", onVis);
-    window.addEventListener("pageshow", play);
-
-    const onScroll = () => {
-      play();
-      window.removeEventListener("scroll", onScroll);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true, once: true });
-
-    const retry = window.setInterval(() => {
-      if (el.paused && inView) play();
-    }, 2500);
-
     return () => {
-      el.removeEventListener("canplay", play);
-      el.removeEventListener("loadeddata", play);
-      el.removeEventListener("loadedmetadata", play);
-      document.removeEventListener("visibilitychange", onVis);
-      window.removeEventListener("pageshow", play);
-      window.removeEventListener("scroll", onScroll);
-      window.clearInterval(retry);
+      el.pause();
     };
   }, [inView, src, failed, lite]);
 

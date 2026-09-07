@@ -16,13 +16,13 @@ function Column({
   duration: number;
   stillsOnly?: boolean;
 }) {
-  const doubled = [...items, ...items];
+  const doubled = stillsOnly ? items : [...items, ...items];
   return (
     <div className={`motion-col motion-col--${direction}`}>
       <div className="motion-col__track" style={{ animationDuration: `${duration}s` }}>
         {doubled.map((item, i) => (
           <figure key={`${item.video}-${i}`} className="motion-card">
-            {i < items.length && !stillsOnly ? (
+            {!stillsOnly && i < items.length ? (
               <SmartVideo src={item.video} poster={item.poster} />
             ) : (
               <img

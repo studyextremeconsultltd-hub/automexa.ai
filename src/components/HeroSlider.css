@@ -225,26 +225,8 @@ video.mosaic-tile__media {
 
   .mosaic-tile {
     border-radius: 12px;
-    /* Keep board alive on phones — was animation:none which looked frozen to customers */
-  }
-
-  .mosaic-tile--1,
-  .mosaic-tile--3,
-  .mosaic-tile--4 {
-    animation: mosaic-float 8s ease-in-out infinite;
-  }
-
-  .mosaic-tile--2,
-  .mosaic-tile--6,
-  .mosaic-tile--8 {
-    animation: mosaic-float 10s ease-in-out infinite reverse;
-  }
-
-  .mosaic-tile--5,
-  .mosaic-tile--7,
-  .mosaic-tile--9,
-  .mosaic-tile--10 {
-    animation: mosaic-float 9s ease-in-out infinite;
+    animation: none !important;
+    transform: none !important;
   }
 
   .hero__caption-inner {
