@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   Bot,
   Plug,
@@ -25,7 +24,7 @@ export default function ExpertiseShowcase() {
 
   return (
     <>
-      <section className="section expertise-section" id="expertise">
+      <section className="section expertise-section cv-auto" id="expertise">
         <div className="container">
           <div className="section-head center">
             <p className="section-label">Our Expertise</p>
@@ -40,17 +39,10 @@ export default function ExpertiseShowcase() {
           </div>
 
           <div className="expertise-grid">
-            {expertiseAreas.map((area, i) => {
+            {expertiseAreas.map((area) => {
               const Icon = iconMap[area.icon as keyof typeof iconMap] ?? Bot;
               return (
-                <motion.article
-                  key={area.title}
-                  className="expertise-card"
-                  initial={{ opacity: 0, y: 26 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: (i % 3) * 0.08, duration: 0.45 }}
-                >
+                <article key={area.title} className="expertise-card">
                   <span className="expertise-card__icon">
                     <Icon size={26} />
                   </span>
@@ -64,14 +56,14 @@ export default function ExpertiseShowcase() {
                       </li>
                     ))}
                   </ul>
-                </motion.article>
+                </article>
               );
             })}
           </div>
         </div>
       </section>
 
-      <section className="stats-band" aria-label="AutoMexa in numbers">
+      <section className="stats-band cv-auto" aria-label="AutoMexa in numbers">
         <div className="container stats-band__inner">
           {stats.map((s) => (
             <div className="stats-band__item" key={s.label}>
@@ -82,7 +74,7 @@ export default function ExpertiseShowcase() {
         </div>
       </section>
 
-      <section className="integrations-band" aria-label="Platforms we integrate">
+      <section className="integrations-band cv-auto" aria-label="Platforms we integrate">
         <div className="container">
           <p className="section-label center" style={{ textAlign: "center" }}>
             We Integrate With

@@ -53,6 +53,16 @@ html {
   min-height: 40vh;
 }
 
+.home-rest-fallback {
+  min-height: min(70vh, 520px);
+  background: linear-gradient(180deg, #0b3a6e 0%, #124a86 40%, #f5f9ff 100%);
+}
+
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 640px;
+}
+
 body {
   font-family: var(--font-body);
   color: var(--text);

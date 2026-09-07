@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { clips } from "../data/content";
 import { useQuote } from "../context/QuoteContext";
+import { useLiteMedia } from "../hooks/useLiteMedia";
 import SmartVideo from "./SmartVideo";
 import "./HighlightSlider.css";
 
@@ -45,64 +45,59 @@ const slides = [
 
 export default function HighlightSlider() {
   const { openQuote } = useQuote();
+  const lite = useLiteMedia();
   const [index, setIndex] = useState(0);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
+    const start = window.setTimeout(() => setActive(true), lite ? 4000 : 1500);
+    return () => window.clearTimeout(start);
+  }, [lite]);
+
+  useEffect(() => {
+    if (!active) return;
     const id = window.setInterval(() => {
       setIndex((i) => (i + 1) % slides.length);
-    }, 4500);
+    }, lite ? 7000 : 4500);
     return () => window.clearInterval(id);
-  }, []);
+  }, [active, lite]);
 
   const slide = slides[index];
 
   return (
     <section className="highlight-slider">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={slide.id}
-          className="highlight-slider__bg"
-          initial={{ opacity: 0, scale: 1.06 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.7 }}
-          style={{ backgroundImage: `url(${slide.image})` }}
-        >
+      <div
+        key={slide.id}
+        className="highlight-slider__bg"
+        style={{ backgroundImage: `url(${slide.image})` }}
+      >
+        {!lite && (
           <SmartVideo
             src={slide.video}
             poster={slide.image}
             className="highlight-slider__video"
           />
-        </motion.div>
-      </AnimatePresence>
+        )}
+      </div>
       <div className="highlight-slider__veil" />
 
       <div className="container highlight-slider__inner">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`copy-${slide.id}`}
-            className="highlight-slider__copy"
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.4 }}
-          >
-            <p className="highlight-slider__kicker">{slide.kicker}</p>
-            <h2>{slide.title}</h2>
-            {slide.cta && (
-              <div className="highlight-slider__actions">
-                <Link to="/contact" className="btn btn-ink">
-                  Contact Us
-                  <ArrowRight size={16} />
-                </Link>
-                <button type="button" className="btn btn-primary" onClick={openQuote}>
-                  <Sparkles size={16} />
-                  Get Free Quote
-                </button>
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+        <div className="highlight-slider__copy">
+          <p className="highlight-slider__kicker">{slide.kicker}</p>
+          <h2>{slide.title}</h2>
+          {slide.cta && (
+            <div className="highlight-slider__actions">
+              <Link to="/contact" className="btn btn-ink">
+                Contact Us
+                <ArrowRight size={16} />
+              </Link>
+              <button type="button" className="btn btn-primary" onClick={openQuote}>
+                <Sparkles size={16} />
+                Get Free Quote
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="highlight-slider__dots">
           {slides.map((s, i) => (

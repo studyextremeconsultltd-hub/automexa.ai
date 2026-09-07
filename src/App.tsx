@@ -3,10 +3,10 @@ import { lazy, Suspense, useEffect } from "react";
 import { QuoteProvider } from "./context/QuoteContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import QuoteModal from "./components/QuoteModal";
 import AdevEmbed from "./components/AdevEmbed";
+import DeferredQuoteModal from "./components/DeferredQuoteModal";
+import Home from "./pages/Home";
 
-const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Services = lazy(() => import("./pages/Services"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
@@ -32,7 +32,7 @@ function AppShell() {
       {!isPayHub && (
         <>
           <Navbar />
-          <QuoteModal />
+          <DeferredQuoteModal />
           <AdevEmbed />
         </>
       )}

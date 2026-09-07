@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { heroSlides, motionClips } from "../data/content";
-import SmartVideo from "./SmartVideo";
+import { heroSlides, mosaicPool } from "../data/content";
+import { useLiteMedia } from "../hooks/useLiteMedia";
+import SafeImage from "./SafeImage";
 import "./HeroSlider.css";
 
 const tileShapes = [
@@ -18,94 +18,96 @@ const tileShapes = [
   "square",
 ] as const;
 
+const prefersReducedMotion =
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export default function HeroSlider() {
+  const lite = useLiteMedia();
   const [index, setIndex] = useState(0);
   const [playVideo, setPlayVideo] = useState(false);
+  const [readyToRotate, setReadyToRotate] = useState(false);
+
+  // Delay slide rotation so LCP stays stable (helps CLS + LCP)
+  useEffect(() => {
+    const warm = window.setTimeout(() => setReadyToRotate(true), lite ? 12000 : 8000);
+    return () => window.clearTimeout(warm);
+  }, [lite]);
 
   useEffect(() => {
+    if (!readyToRotate) return;
     const id = window.setInterval(() => {
       setIndex((i) => (i + 1) % heroSlides.length);
-    }, 8000);
+    }, lite ? 10000 : 8000);
     return () => window.clearInterval(id);
-  }, []);
+  }, [readyToRotate, lite]);
 
   useEffect(() => {
-    const id = window.setTimeout(() => setPlayVideo(true), 500);
+    if (lite) return;
+    const id = window.setTimeout(() => setPlayVideo(true), 2500);
     return () => window.clearTimeout(id);
-  }, []);
+  }, [lite]);
 
   const slide = heroSlides[index];
 
   return (
     <section className="hero">
       <div className="hero__visual">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={slide.id}
-            className="hero__bg"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            style={{ backgroundImage: `url(${slide.image})` }}
-          >
-            {slide.video && playVideo && (
-              <video
-                className="hero__bg-video"
-                src={slide.video}
-                poster={slide.image}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload={index === 0 ? "metadata" : "none"}
-                onCanPlay={(e) => {
-                  const v = e.currentTarget;
-                  v.defaultMuted = true;
-                  v.muted = true;
-                  v.setAttribute("playsinline", "");
-                  v.setAttribute("webkit-playsinline", "");
-                  void v.play().catch(() => {});
-                }}
-              />
-            )}
-          </motion.div>
-        </AnimatePresence>
+        <div className="hero__bg" key={slide.id}>
+          <img
+            className="hero__bg-img"
+            src={slide.image}
+            alt=""
+            width={1280}
+            height={853}
+            fetchPriority={index === 0 ? "high" : "low"}
+            decoding={index === 0 ? "sync" : "async"}
+            sizes="100vw"
+          />
+          {slide.video && playVideo && !lite && !prefersReducedMotion && (
+            <video
+              className="hero__bg-video"
+              src={slide.video}
+              poster={slide.image}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="none"
+              onCanPlay={(e) => {
+                const v = e.currentTarget;
+                v.defaultMuted = true;
+                v.muted = true;
+                v.setAttribute("playsinline", "");
+                v.setAttribute("webkit-playsinline", "");
+                void v.play().catch(() => {});
+              }}
+            />
+          )}
+        </div>
         <div className="hero__veil" />
         <div className="hero__grain" />
 
-        <div className="hero__stage" aria-hidden>
-          {Array.from({ length: 10 }).map((_, i) => {
-            const clip = motionClips[i % motionClips.length];
-            return (
+        {!lite && (
+          <div className="hero__stage" aria-hidden>
+            {Array.from({ length: 6 }).map((_, i) => (
               <div
                 key={i}
                 className={`mosaic-tile mosaic-tile--${tileShapes[i]} mosaic-tile--${i + 1}`}
               >
-                <SmartVideo
-                  src={clip.video}
-                  poster={clip.poster}
-                  className="mosaic-tile__media"
+                <SafeImage
+                  src={mosaicPool[i % mosaicPool.length]}
+                  alt=""
+                  loading="lazy"
                 />
               </div>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        )}
 
         <div className="hero__caption">
           <div className="container hero__caption-inner">
-            <AnimatePresence mode="wait">
-              <motion.h1
-                key={`t-${slide.id}`}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35 }}
-              >
-                {slide.title}
-              </motion.h1>
-            </AnimatePresence>
-
+            <h1>{slide.title}</h1>
             <a href="#work" className="btn btn-primary hero__work-btn">
               See Our Work
               <ArrowRight size={16} />

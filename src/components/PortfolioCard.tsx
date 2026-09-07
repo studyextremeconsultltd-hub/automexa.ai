@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import type { projects } from "../data/content";
 import "./PortfolioCard.css";
 
@@ -13,10 +12,9 @@ const stockFallbacks: Record<string, string> = {
   unilink: "/images/portfolio/unilink-landing.webp",
 };
 
-/** Compact horizontal featured card — full-page preview + rotate */
+/** Compact horizontal featured card — full-page preview */
 export function FeaturedWorkCard({
   project,
-  index = 0,
 }: {
   project: Project;
   index?: number;
@@ -34,13 +32,7 @@ export function FeaturedWorkCard({
   }
 
   return (
-    <motion.article
-      className={`featured-card featured-card--${project.id}`}
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-    >
+    <article className={`featured-card featured-card--${project.id}`}>
       <a
         className="featured-card__orbit"
         href={project.url}
@@ -61,6 +53,8 @@ export function FeaturedWorkCard({
               alt={`${project.name} full website`}
               loading="lazy"
               decoding="async"
+              width={800}
+              height={1400}
               fetchPriority="low"
               referrerPolicy="no-referrer"
               onError={handleError}
@@ -74,7 +68,7 @@ export function FeaturedWorkCard({
           {project.industry} · {project.country} · {project.completionTime}
         </p>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
@@ -101,14 +95,10 @@ export default function PortfolioCard({
   }
 
   return (
-    <motion.article
+    <article
       className={`portfolio-card portfolio-card--${project.id} ${
         reverse ? "portfolio-card--reverse" : ""
       } ${compact ? "portfolio-card--compact" : ""}`}
-      initial={{ opacity: 0, y: 36 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.55 }}
     >
       <div className={`portfolio-card__frame portfolio-card__frame--${project.id}`}>
         <div className="portfolio-card__chrome">
@@ -125,6 +115,8 @@ export default function PortfolioCard({
               alt={`${project.name} complete website view`}
               loading="lazy"
               decoding="async"
+              width={800}
+              height={1400}
               referrerPolicy="no-referrer"
               onError={handleError}
             />
@@ -134,6 +126,8 @@ export default function PortfolioCard({
               aria-hidden
               loading="lazy"
               decoding="async"
+              width={800}
+              height={1400}
               referrerPolicy="no-referrer"
               onError={handleError}
             />
@@ -178,6 +172,6 @@ export default function PortfolioCard({
           </>
         )}
       </div>
-    </motion.article>
+    </article>
   );
 }

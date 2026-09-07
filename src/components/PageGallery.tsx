@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import SafeImage from "./SafeImage";
 import SmartVideo from "./SmartVideo";
 import { useLiteMedia } from "../hooks/useLiteMedia";
@@ -19,7 +18,7 @@ export default function PageGallery({
   const visible = lite ? images.slice(0, 3) : images;
 
   return (
-    <section className="page-gallery">
+    <section className="page-gallery cv-auto">
       <div className="container">
         <div className="page-gallery__head">
           <p className="section-label">Visual Showcase</p>
@@ -28,13 +27,9 @@ export default function PageGallery({
         </div>
         <div className="page-gallery__grid">
           {visible.map((img, i) => (
-            <motion.figure
+            <figure
               key={`${img.label}-${i}`}
               className={`page-gallery__card page-gallery__card--${i % 6}`}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: lite ? 0 : i * 0.06 }}
             >
               {img.video ? (
                 <SmartVideo src={img.video} poster={img.src} />
@@ -42,7 +37,7 @@ export default function PageGallery({
                 <SafeImage src={img.src} alt={img.label} />
               )}
               <figcaption>{img.label}</figcaption>
-            </motion.figure>
+            </figure>
           ))}
         </div>
       </div>

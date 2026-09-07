@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
+import { useEffect, useRef, useState, type RefObject } from "react";
+import { useLiteMedia } from "../hooks/useLiteMedia";
 
 type Props = {
   src: string;
@@ -11,15 +11,37 @@ function isNarrow() {
   return typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches;
 }
 
+function useNearViewport(ref: RefObject<HTMLElement | null>) {
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "80px 0px", threshold: 0.12 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref]);
+
+  return inView;
+}
+
 /**
- * Muted looping clip that keeps trying to play on mobile Safari / live CDN.
- * Poster always shows underneath so billboards never look "dead" if video stalls.
+ * Poster-first video: on phones / Save-Data we keep stills only for PageSpeed.
+ * Desktop retries play for Safari/CDN reliability.
  */
 export default function SmartVideo({ src, poster, className = "" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const inView = useInView(ref, { margin: "160px 0px", once: false, amount: 0 });
+  const inView = useNearViewport(ref);
   const [failed, setFailed] = useState(false);
+  const lite = useLiteMedia();
+  const showVideo = inView && !failed && !lite;
 
   useEffect(() => {
     setFailed(false);
@@ -27,7 +49,7 @@ export default function SmartVideo({ src, poster, className = "" }: Props) {
 
   useEffect(() => {
     const el = videoRef.current;
-    if (!el || failed) return;
+    if (!el || failed || lite) return;
 
     const play = () => {
       try {
@@ -44,7 +66,6 @@ export default function SmartVideo({ src, poster, className = "" }: Props) {
     };
 
     if (!inView) {
-      // Keep last frame on mobile — hard pause + unload makes billboards look frozen/blank.
       if (!isNarrow()) el.pause();
       return;
     }
@@ -60,7 +81,6 @@ export default function SmartVideo({ src, poster, className = "" }: Props) {
     document.addEventListener("visibilitychange", onVis);
     window.addEventListener("pageshow", play);
 
-    // One soft unlock after first scroll (not click) — helps iOS without stealing taps.
     const onScroll = () => {
       play();
       window.removeEventListener("scroll", onScroll);
@@ -80,12 +100,19 @@ export default function SmartVideo({ src, poster, className = "" }: Props) {
       window.removeEventListener("scroll", onScroll);
       window.clearInterval(retry);
     };
-  }, [inView, src, failed]);
+  }, [inView, src, failed, lite]);
 
   return (
     <div ref={ref} className={`smart-video ${className}`.trim()}>
-      <img src={poster} alt="" loading="lazy" decoding="async" />
-      {!failed && (
+      <img
+        src={poster}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        width={720}
+        height={480}
+      />
+      {showVideo && (
         <video
           ref={videoRef}
           src={src}
@@ -94,7 +121,7 @@ export default function SmartVideo({ src, poster, className = "" }: Props) {
           muted
           loop
           playsInline
-          preload={isNarrow() ? "metadata" : "auto"}
+          preload="none"
           aria-hidden
           onError={() => setFailed(true)}
         />
